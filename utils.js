@@ -1,10 +1,15 @@
 import React from 'react'
-import { ActionSheetIOS } from 'react-native'
+import { ActionSheetIOS, Share, Platform } from 'react-native'
 import { TouchableWithoutFeedback as Touch } from 'react-native'
 
 
-export const shareUrl = url =>
-  ActionSheetIOS.showShareActionSheetWithOptions({ url }, console.error, console.log)
+export const shareUrl = url => {
+  if (Platform.OS === 'ios') {
+    ActionSheetIOS.showShareActionSheetWithOptions({ url }, console.error, console.log)
+  } else {
+    Share.share({ url, message: url })
+  }
+}
 
 export const by = (sortOrder, getKey) => (itemA, itemB) =>
   sortOrder.indexOf(getKey(itemA)) < sortOrder.indexOf(getKey(itemB)) ? -1 : 1

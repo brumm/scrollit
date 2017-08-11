@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
+import { View, TouchableWithoutFeedback as Touch, Animated, Platform } from 'react-native'
 import glamorous from 'glamorous-native'
 import ProgressiveImage from 'scrollit/components/ProgressiveImage'
 import { Link } from 'react-router-native'
@@ -15,7 +15,7 @@ import VideoPlayer from 'scrollit/components/VideoPlayer'
 import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
 import { toggleOverflow } from 'scrollit/utils'
 
-const AlbumIndicatorContainer = glamorous(VibrancyView)({
+const AlbumIndicatorContainer = glamorous(Platform.OS === 'ios' ? VibrancyView : View)({
   borderRadius: 10,
   paddingHorizontal: 10,
   paddingVertical: 3,

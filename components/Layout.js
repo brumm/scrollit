@@ -1,4 +1,5 @@
 import React from 'react'
+import { View, Platform } from 'react-native'
 import glamorous from 'glamorous-native'
 import { VibrancyView } from 'react-native-blur'
 
@@ -18,7 +19,7 @@ export const Text = glamorous.text(
   })
 )
 
-export const Vibrant = glamorous(VibrancyView)({
+export const Vibrant = glamorous(Platform.OS === 'ios' ? VibrancyView : View)({
   paddingVertical: 5,
   paddingHorizontal: 5,
 })
