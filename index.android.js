@@ -1,53 +1,112 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import React from 'react'
+import { AppRegistry, StatusBar } from 'react-native'
+import SideMenu from 'react-native-side-menu'
+import { Router, Route, Switch, Redirect } from 'react-router-native'
+import glamorous from 'glamorous-native'
 
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import history from 'scrollit/history'
+import { subredditFetch } from 'scrollit/api'
+import Storage from 'scrollit/packages/react-native-key-value-store'
 
-export default class scrollit extends Component {
+import Listing from 'scrollit/components/Listing'
+import Log from 'scrollit/components/Log'
+import Fetch from 'scrollit/components/Fetch'
+import Menu from 'scrollit/components/Menu'
+import { Loading, Error } from 'scrollit/components/LoadingStates'
+import { Text } from 'scrollit/components/Layout'
+
+import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
+
+const DEFAULT_SUBREDDIT = 'pics'
+const DEFAULT_LIMIT = 100
+
+const AppContainer = glamorous.view({
+  backgroundColor: '#1c1c1c',
+  width: ITEM_WIDTH,
+  height: ITEM_HEIGHT,
+})
+
+export default class App extends React.Component {
+  state = {
+    savedSubs: [],
+  }
+
+  async componentDidMount() {
+    const savedSubs = await Storage.get('savedSubs', [])
+    this.setState({ savedSubs })
+  }
+
+  setSavedSubs = async savedSubs => {
+    await Storage.set('savedSubs', savedSubs)
+    this.setState({ savedSubs })
+  }
+
   render() {
+    const { savedSubs } = this.state
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
+      <AppContainer>
+        <StatusBar hidden />
+        <Router history={history}>
+          <Switch>
+            <Route
+              path="/u/:author"
+              render={({ match, location }) =>
+                <SideMenu menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}>
+                  <Fetch
+                    url={`https://www.reddit.com/user/${match.params.author}/submitted.json`}
+                    func={subredditFetch}
+                    component={Listing}
+                    loading={
+                      <Loading>
+                        <Text>
+                          {`/u/${match.params.author}`}
+                        </Text>
+                      </Loading>
+                    }
+                    error={reason => <Error reason={reason} />}
+                  />
+                </SideMenu>}
+            />
+
+            <Route
+              path="/r/:name/:after?"
+              render={({ match, location }) =>
+                <SideMenu
+                  menu={
+                    <Menu
+                      currentSub={match.params.name}
+                      savedSubs={savedSubs}
+                      setSavedSubs={this.setSavedSubs}
+                    />
+                  }
+                >
+                  <Fetch
+                    url={`https://www.reddit.com/r/${match.params
+                      .name}.json?limit=${DEFAULT_LIMIT}&after=${match.params.after || ''}`}
+                    subreddit={match.params.name}
+                    func={subredditFetch}
+                    component={Listing}
+                    loading={
+                      <Loading>
+                        {match.params.name.split('+').map(name =>
+                          <Text key={name}>
+                            {name}
+                          </Text>
+                        )}
+                      </Loading>
+                    }
+                    error={reason => <Error reason={reason} />}
+                  />
+                </SideMenu>}
+            />
+
+            <Redirect from="/" to={`/r/${DEFAULT_SUBREDDIT}`} />
+          </Switch>
+        </Router>
+      </AppContainer>
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('scrollit', () => scrollit);
+AppRegistry.registerComponent('scrollit', () => App)
