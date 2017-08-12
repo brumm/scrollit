@@ -11,7 +11,7 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 const between = (number, min, max) => number >= min && number <= max
 const MIN_PULLUP_DISTANCE = -75
 
-export default class Swipe extends React.Component {
+export default class Swiper extends React.Component {
   static defaultProps = {
     horizontal: false,
     onChange: () => {},
@@ -77,7 +77,9 @@ export default class Swipe extends React.Component {
     const { currentIndex, readyToRefresh, refreshing, pullUpDistance } = this.state
 
     return (
-      <View>
+      <View style={{
+        backgroundColor: '#1c1c1c'
+      }}>
         {children && children(currentIndex)}
         {onRefresh && (
           <View
