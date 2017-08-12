@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppRegistry, StatusBar } from 'react-native'
+import { AppRegistry, StatusBar, Animated } from 'react-native'
 import SideMenu from 'react-native-side-menu'
 import { Router, Route, Switch, Redirect } from 'react-router-native'
 import glamorous from 'glamorous-native'
@@ -73,6 +73,14 @@ export default class App extends React.Component {
               path="/r/:name/:after?"
               render={({ match, location }) =>
                 <SideMenu
+                  openMenuOffset={ITEM_WIDTH * 0.8}
+                  autoClosing={false}
+                  bounceBackOnOverdraw={false}
+                  animationFunction={(prop, value) =>
+                    Animated.spring(prop, {
+                      toValue: value,
+                      bounciness: 0,
+                    })}
                   menu={
                     <Menu
                       currentSub={match.params.name}
