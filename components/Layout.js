@@ -1,6 +1,7 @@
 import React from 'react'
+import { View, Platform } from 'react-native'
 import glamorous from 'glamorous-native'
-import { VibrancyView } from 'react-native-blur'
+import { BlurView, VibrancyView } from 'react-native-blur'
 
 export const InfoBox = glamorous.view(
   {
@@ -22,10 +23,20 @@ export const Text = glamorous.text(
   })
 )
 
-export const Vibrant = glamorous(VibrancyView)({
-  paddingVertical: 5,
-  paddingHorizontal: 5,
-})
+export const Vibrant = ({ children, ...props }) => {
+  const Container = glamorous(Platform.OS === 'ios' ? VibrancyView : View)({
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+  })
+  return Platform.OS === 'ios'
+    ? <Container {...props}>
+        {children}
+      </Container>
+    : <Container {...props}>
+        <BlurView />
+        {children}
+      </Container>
+}
 
 class AdaptingHeight extends React.Component {
   state = {
