@@ -9,6 +9,7 @@ const Card = glamorous.view({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '#333',
+  overflow: 'hidden',
 })
 
 export default Card
