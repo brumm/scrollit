@@ -1,4 +1,5 @@
 import React from 'react'
+import {ActivityIndicator} from 'react-native'
 import Card from 'scrollit/components/Card'
 import glamorous from 'glamorous-native'
 
@@ -9,7 +10,7 @@ const Text = glamorous.text({
 
 export const Loading = ({ children }) =>
   <Card>
-    <Text>Loading</Text>
+    <ActivityIndicator style={{ marginBottom: 20 }} />
     {children}
   </Card>
 
