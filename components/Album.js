@@ -15,14 +15,18 @@ import VideoPlayer from 'scrollit/components/VideoPlayer'
 import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
 import { toggleOverflow } from 'scrollit/utils'
 
-const AlbumIndicatorContainer = glamorous(VibrancyView)({
-  borderRadius: 10,
-  paddingHorizontal: 10,
-  paddingVertical: 3,
-  alignSelf: 'flex-end',
-  marginTop: 10,
-  marginRight: 10,
-})
+const AlbumIndicatorContainer = props =>
+  <Vibrant
+    {...props}
+    style={{
+      borderRadius: 10,
+      paddingHorizontal: 10,
+      paddingVertical: 3,
+      alignSelf: 'flex-end',
+      marginTop: 10,
+      marginRight: 10,
+    }}
+  />
 
 const OverflowText = toggleOverflow(Text)
 
