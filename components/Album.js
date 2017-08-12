@@ -32,7 +32,7 @@ const OverflowText = toggleOverflow(Text)
 
 class Album extends React.Component {
   render() {
-    const { albumFetch, shareUrl, toggleInfo, showInfo } = this.props
+    const { albumFetch, shareUrl, toggleInfo, showInfo, infoBoxStyle } = this.props
 
     if (albumFetch.pending) {
       return (
@@ -71,15 +71,6 @@ class Album extends React.Component {
           ) =>
             <Touch onPress={toggleInfo} onLongPress={() => shareUrl(link)}>
               <Card>
-                {description && showInfo &&
-                  isVisible &&
-                  <Gateway into="album-slide-title">
-                    <Vibrant>
-                      <OverflowText small>
-                        {description}
-                      </OverflowText>
-                    </Vibrant>
-                  </Gateway>}
                 {animated
                   ? <VideoPlayer id={id} paused={!isVisible} />
                   : <ProgressiveImage visible={shouldRender} id={id} />}
@@ -87,13 +78,24 @@ class Album extends React.Component {
             </Touch>}
         >
           {currentIndex =>
-            currentIndex === 0 &&
-            showInfo &&
-            <Gateway into="album-indicator">
-              <AlbumIndicatorContainer>
-                <Text small>Album</Text>
-              </AlbumIndicatorContainer>
-            </Gateway>}
+            <InfoBox position="bottom">
+              <Animated.View style={infoBoxStyle}>
+                <Vibrant>
+                  <OverflowText small>
+                    {albumFetch.value.images[currentIndex].description}
+                  </OverflowText>
+                </Vibrant>
+              </Animated.View>
+
+              {showInfo &&
+                <Gateway into="album-indicator">
+                  <AlbumIndicatorContainer>
+                    <Text small>
+                      {`${currentIndex + 1} of ${albumFetch.value.images.length}`}
+                    </Text>
+                  </AlbumIndicatorContainer>
+                </Gateway>}
+            </InfoBox>}
         </Swiper>
       )
     }

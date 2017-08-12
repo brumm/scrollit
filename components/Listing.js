@@ -54,6 +54,13 @@ export default class Listing extends React.Component {
               { title, thingId, isAlbum, isFile, url, isVideo, subreddit_name_prefixed, author, subreddit },
               { shouldRender, isVisible }
             ) => {
+              const infoBoxStyle = {
+                opacity: infoBoxAnimation,
+                marginBottom: infoBoxAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-infoBoxHeight, 0],
+                }),
+              }
               return (
                 <Card>
                   {isVisible &&
@@ -62,6 +69,7 @@ export default class Listing extends React.Component {
                         onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
                           this.setState({ infoBoxHeight })}
                       >
+
                         <Vibrant style={{
                           flexDirection: 'row',
                           alignItems: 'center',
@@ -86,6 +94,7 @@ export default class Listing extends React.Component {
                       ? <Album
                           id={thingId}
                           toggleInfo={this.toggleInfo}
+                          infoBoxStyle={infoBoxStyle}
                           shareUrl={shareUrl}
                           showInfo={isVisible}
                         />
@@ -122,20 +131,6 @@ export default class Listing extends React.Component {
               <GatewayDest name="slide-title" component={View} />
             </Animated.View>
             <GatewayDest name="album-indicator" component={View} />
-          </InfoBox>
-
-          <InfoBox position="bottom">
-            <Animated.View
-              style={{
-                opacity: infoBoxAnimation,
-                marginBottom: infoBoxAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-infoBoxHeight, 0],
-                }),
-              }}
-            >
-              <GatewayDest name="album-slide-title" component={View} />
-            </Animated.View>
           </InfoBox>
         </View>
       </GatewayProvider>
