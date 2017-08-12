@@ -8,6 +8,7 @@ import { Gateway } from 'scrollit/packages/react-gateway'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
+import { Loading, Error } from 'scrollit/components/LoadingStates'
 import Card from 'scrollit/components/Card'
 import Swiper from 'scrollit/components/Swiper'
 import { albumFetch } from 'scrollit/api'
@@ -36,17 +37,11 @@ class Album extends React.Component {
 
     if (albumFetch.pending) {
       return (
-        <Card>
-          <Text>Loading Album</Text>
-        </Card>
+        <Loading />
       )
     } else if (albumFetch.rejected) {
       return (
-        <Card>
-          <Text>
-            Error: {albumFetch.reason}
-          </Text>
-        </Card>
+        <Error />
       )
     } else if (albumFetch.fulfilled) {
       if (albumFetch.value.images.length === 1) {
