@@ -51,7 +51,19 @@ export default class Listing extends React.Component {
             items={posts}
             onRefresh={after && goNext}
             renderItem={(
-              { title, thingId, isAlbum, isFile, url, isVideo, subreddit_name_prefixed, author, subreddit },
+              {
+                title,
+                thingId,
+                isAlbum,
+                isFile,
+                url,
+                isVideo,
+                subreddit_name_prefixed,
+                author,
+                subreddit,
+                isImgur,
+                thumbnail,
+              },
               { shouldRender, isVisible }
             ) => {
               const infoBoxStyle = {
@@ -61,60 +73,87 @@ export default class Listing extends React.Component {
                   outputRange: [-infoBoxHeight, 0],
                 }),
               }
-              return (
-                <Card>
-                  {isVisible &&
-                    <Gateway into="slide-title">
-                      <View
-                        onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
-                          this.setState({ infoBoxHeight })}
-                      >
 
-                        <Vibrant style={{
+              const info = isVisible
+                ? <Gateway into="slide-title">
+                    <View
+                      onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
+                        this.setState({ infoBoxHeight })}
+                    >
+                      <Vibrant
+                        style={{
                           flexDirection: 'row',
                           alignItems: 'center',
-                        }}>
-                          <Touch onPress={() => history.push(`/u/${author}`)}>
-                            <Text small numberOfLines={3} style={{ flex: 1 }}>
-                              {title}
-                            </Text>
-                          </Touch>
-
-                          <Touch onPress={() => history.push(`/r/${subreddit}`)}>
-                            <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
-                              {subreddit_name_prefixed}
-                            </Text>
-                          </Touch>
-                        </Vibrant>
-                      </View>
-                    </Gateway>}
-
-                  {isAlbum
-                    ? shouldRender
-                      ? <Album
-                          id={thingId}
-                          toggleInfo={this.toggleInfo}
-                          infoBoxStyle={infoBoxStyle}
-                          shareUrl={shareUrl}
-                          showInfo={isVisible}
-                        />
-                      : <Card />
-                    : isVideo
-                      ? <Touch
-                          onPress={this.toggleInfo}
-                          onLongPress={() => shareUrl(`https://i.imgur.com/${thingId}.mp4`)}
-                        >
-                          <View>
-                            <VideoPlayer id={thingId} paused={!isVisible} />
-                          </View>
+                        }}
+                      >
+                        <Touch onPress={() => history.push(`/u/${author}`)}>
+                          <Text small numberOfLines={3} style={{ flex: 1 }}>
+                            {title}
+                          </Text>
                         </Touch>
-                      : <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
-                          <View>
-                            <ProgressiveImage visible={shouldRender} id={thingId} />
-                          </View>
-                        </Touch>}
-                </Card>
-              )
+
+                        <Touch onPress={() => history.push(`/r/${subreddit}`)}>
+                          <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
+                            {subreddit_name_prefixed}
+                          </Text>
+                        </Touch>
+                      </Vibrant>
+                    </View>
+                  </Gateway>
+                : null
+
+              if (isImgur) {
+                return (
+                  <Card>
+                    {info}
+                    {isAlbum
+                      ? shouldRender
+                        ? <Album
+                            id={thingId}
+                            toggleInfo={this.toggleInfo}
+                            infoBoxStyle={infoBoxStyle}
+                            shareUrl={shareUrl}
+                            showInfo={isVisible}
+                          />
+                        : <Card />
+                      : isVideo
+                        ? <Touch
+                            onPress={this.toggleInfo}
+                            onLongPress={() => shareUrl(`https://i.imgur.com/${thingId}.mp4`)}
+                          >
+                            <View>
+                              <VideoPlayer id={thingId} paused={!isVisible} />
+                            </View>
+                          </Touch>
+                        : <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+                            <View>
+                              <ProgressiveImage visible={shouldRender} id={thingId} />
+                            </View>
+                          </Touch>}
+                  </Card>
+                )
+              } else {
+                return (
+                  <Card>
+                    {info}
+                    <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+                      <View>
+                        <ProgressiveImage
+                          thumbnailSource={{
+                            uri: thumbnail,
+                            cache: 'force-cache',
+                          }}
+                          imageSource={{
+                            uri: url,
+                            cache: 'force-cache',
+                          }}
+                          visible={shouldRender}
+                        />
+                      </View>
+                    </Touch>
+                  </Card>
+                )
+              }
             }}
           />
 

@@ -25,14 +25,20 @@ export default class ProgressiveImage extends Component {
 
   render() {
     const { thumbnailBlurRadius, visible, id } = this.props
+    let { thumbnailSource, imageSource } = this.props
 
-    const thumbnailSource = {
-      uri: `https://i.imgur.com/${id}t.png`,
-      cache: 'force-cache',
+    if (!thumbnailSource) {
+      thumbnailSource = {
+        uri: `https://i.imgur.com/${id}t.png`,
+        cache: 'force-cache',
+      }
     }
-    const imageSource = {
-      uri: `https://i.imgur.com/${id}l.png`,
-      cache: 'force-cache',
+
+    if (!imageSource) {
+      imageSource = {
+        uri: `https://i.imgur.com/${id}l.png`,
+        cache: 'force-cache',
+      }
     }
 
     return (
