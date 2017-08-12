@@ -2,12 +2,16 @@ import React from 'react'
 import glamorous from 'glamorous-native'
 import { VibrancyView } from 'react-native-blur'
 
-export const InfoBox = glamorous.view({
-  position: 'absolute',
-  width: '100%',
-}, ({ position = 'top' }) => ({
-  [position]: 0
-}))
+export const InfoBox = glamorous.view(
+  {
+    position: 'absolute',
+    zIndex: 1,
+    width: '100%',
+  },
+  ({ position = 'top' }) => ({
+    [position]: 0,
+  })
+)
 
 export const Text = glamorous.text(
   {
