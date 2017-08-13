@@ -12,9 +12,12 @@ export const Loading = ({ children }) =>
   </Card>
 
 export const Error = ({ reason }) =>
-<Card>
-  <Text>
-    {':('}
-  </Text>
-  <Log reason={reason} />
-</Card>
+  <Card>
+    <Text>
+      {':('}
+    </Text>
+    {reason &&
+      <Text small style={{ marginTop: 20 }}>
+        {JSON.stringify(reason.cause, null, 2)}
+      </Text>}
+  </Card>
