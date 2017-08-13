@@ -16,7 +16,7 @@ import { Text } from 'scrollit/components/Layout'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
-const DEFAULT_SUBREDDIT = 'pics'
+const DEFAULT_SUBREDDIT = 'popular'
 const DEFAULT_LIMIT = 100
 
 const AppContainer = glamorous.view({
