@@ -2,11 +2,8 @@ import React from 'react'
 import { View, FlatList, ActivityIndicator } from 'react-native'
 import glamorous from 'glamorous-native'
 
-const Text = glamorous.text({
-  color: '#fafafa'
-})
-
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
+import { Text } from 'scrollit/components/Layout'
 
 const between = (number, min, max) => number >= min && number <= max
 const MIN_PULLUP_DISTANCE = -75
