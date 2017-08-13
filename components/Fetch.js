@@ -2,6 +2,9 @@ import React from 'react'
 import { connect } from 'react-refetch'
 
 export default class Fetch extends React.Component {
+  componentWillUpdate(nextProps, nextState) {
+    this.props.didNavigate && this.props.didNavigate()
+  }
 
   shouldComponentUpdate({ url }) {
     return url !== this.props.url
