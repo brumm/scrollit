@@ -9,7 +9,8 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
 const LinkText = glamorous.text({
   fontSize: 20,
-  padding: 10,
+  paddingVertical: 10,
+  paddingHorizontal: 20,
   marginVertical: 5,
   color: '#fafafa',
   backgroundColor: 'black',
@@ -18,7 +19,8 @@ const LinkText = glamorous.text({
 
 const Button = glamorous.text({
   fontSize: 20,
-  padding: 10,
+  paddingVertical: 10,
+  paddingHorizontal: 20,
   marginVertical: 5,
   color: '#fafafa',
   backgroundColor: 'black',
@@ -106,7 +108,7 @@ export default class Menu extends React.Component {
           </View>
 
           <Touch onPress={() => history.goBack()}>
-            <LinkText>Back</LinkText>
+            <LinkText>Navigate back</LinkText>
           </Touch>
         </ScrollView>
       </MenuContainer>
