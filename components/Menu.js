@@ -34,7 +34,12 @@ const selectCustomSubreddit = () =>
 
 const LeftContent = ({ currentSub }) =>
   currentSub
-    ? <Button style={{ backgroundColor: '#317e22' }}>
+    ? <Button
+        style={{
+          backgroundColor: '#317e22',
+          textAlign: 'right',
+        }}
+      >
         Add {`r/${currentSub}`}
       </Button>
     : null
@@ -47,11 +52,13 @@ export default class Menu extends React.Component {
 
     return (
       <MenuContainer>
-        <ScrollView contentContainerStyle={{
-          minHeight: ITEM_HEIGHT,
-          justifyContent: 'flex-end',
-          paddingBottom: 50,
-        }}>
+        <ScrollView
+          contentContainerStyle={{
+            minHeight: ITEM_HEIGHT,
+            justifyContent: 'flex-end',
+            paddingBottom: 50,
+          }}
+        >
           <Touch onPress={selectCustomSubreddit}>
             <LinkText>Enter subreddit name</LinkText>
           </Touch>
@@ -61,44 +68,46 @@ export default class Menu extends React.Component {
               onPress={() => {
                 setSavedSubs([...savedSubs, [currentSub]])
               }}
+            >
+              {!savedSubs.some(sub => sub.join().includes(currentSub))
+                ? <LinkText style={{ backgroundColor: '#317e22' }}>
+                    Add {`r/${currentSub}`}
+                  </LinkText>
+                : <View />}
+            </Touch>}
+
+          <View style={{ marginVertical: 30 }}>
+            {savedSubs.map((sub, index) =>
+              <Swipeable
+                key={`${sub}-${index}`}
+                leftContent={!sub.includes(currentSub) && <LeftContent currentSub={currentSub} />}
+                rightContent={rightContent}
+                onLeftActionRelease={() => {
+                  currentSub &&
+                    setSavedSubs(
+                      savedSubs.map(savedsub => {
+                        if (savedsub.join() === sub.join()) {
+                          return [...savedsub, currentSub]
+                        } else {
+                          return savedsub
+                        }
+                      })
+                    )
+                }}
+                onRightActionRelease={() => {
+                  setSavedSubs(savedSubs.filter(savedsub => savedsub.join() !== sub.join()))
+                }}
               >
-                <LinkText style={{ backgroundColor: '#317e22' }}>
-                  Add {`r/${currentSub}`}
-                </LinkText>
-              </Touch>}
+                <Link to={`/r/${sub.join('+')}`} key={sub} component={Touch}>
+                  <LinkText numberOfLines={1}>{`/r/${sub.join('+')}`}</LinkText>
+                </Link>
+              </Swipeable>
+            )}
+          </View>
 
-              <View style={{ marginVertical: 30 }}>
-                {savedSubs.map((sub, index) =>
-                  <Swipeable
-                    key={`${sub}-${index}`}
-                    leftContent={<LeftContent currentSub={currentSub} />}
-                    rightContent={rightContent}
-                    onLeftActionRelease={() => {
-                      currentSub &&
-                      setSavedSubs(
-                        savedSubs.map(savedsub => {
-                          if (savedsub.join() === sub.join()) {
-                            return [...savedsub, currentSub]
-                          } else {
-                            return savedsub
-                          }
-                        })
-                      )
-                    }}
-                    onRightActionRelease={() => {
-                      setSavedSubs(savedSubs.filter(savedsub => savedsub.join() !== sub.join()))
-                    }}
-                    >
-                      <Link to={`/r/${sub.join('+')}`} key={sub} component={Touch}>
-                      <LinkText numberOfLines={1}>{`/r/${sub.join('+')}`}</LinkText>
-                    </Link>
-                  </Swipeable>
-                )}
-              </View>
-
-              <Touch onPress={() => history.goBack()}>
-                <LinkText>Back</LinkText>
-              </Touch>
+          <Touch onPress={() => history.goBack()}>
+            <LinkText>Back</LinkText>
+          </Touch>
         </ScrollView>
       </MenuContainer>
     )

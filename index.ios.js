@@ -9,7 +9,6 @@ import { subredditFetch } from 'scrollit/api'
 import Storage from 'scrollit/packages/react-native-key-value-store'
 
 import Listing from 'scrollit/components/Listing'
-import Log from 'scrollit/components/Log'
 import Fetch from 'scrollit/components/Fetch'
 import Menu from 'scrollit/components/Menu'
 import { Loading, Error } from 'scrollit/components/LoadingStates'
@@ -26,6 +25,17 @@ const AppContainer = glamorous.view({
   height: ITEM_HEIGHT,
 })
 
+const sideMenuOptions = {
+  openMenuOffset: ITEM_WIDTH * 0.8,
+  autoClosing: false,
+  bounceBackOnOverdraw: false,
+  animationFunction: (prop, value) =>
+    Animated.spring(prop, {
+      toValue: value,
+      bounciness: 0,
+    })
+}
+
 export default class App extends React.Component {
   state = {
     savedSubs: [],
@@ -36,13 +46,23 @@ export default class App extends React.Component {
     this.setState({ savedSubs })
   }
 
+  captureSideMenuRef = instance => {
+     this.sideMenuInstance = instance
+  }
+
   setSavedSubs = async savedSubs => {
     await Storage.set('savedSubs', savedSubs)
     this.setState({ savedSubs })
   }
 
+  closeMenu = () => {
+    if (this.sideMenuInstance) {
+      this.sideMenuInstance.openMenu(false)
+    }
+  }
+
   render() {
-    const { savedSubs } = this.state
+    const { savedSubs, isMenuOpen } = this.state
 
     return (
       <AppContainer>
@@ -52,9 +72,13 @@ export default class App extends React.Component {
             <Route
               path="/u/:author"
               render={({ match, location }) =>
-                <SideMenu menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}>
+                <SideMenu
+                  ref={this.captureSideMenuRef}
+                  {...sideMenuOptions}
+                  menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}>
                   <Fetch
                     url={`https://www.reddit.com/user/${match.params.author}/submitted.json`}
+                    didNavigate={this.closeMenu}
                     func={subredditFetch}
                     component={Listing}
                     loading={
@@ -73,14 +97,8 @@ export default class App extends React.Component {
               path="/r/:name/:after?"
               render={({ match, location }) =>
                 <SideMenu
-                  openMenuOffset={ITEM_WIDTH * 0.8}
-                  autoClosing={false}
-                  bounceBackOnOverdraw={false}
-                  animationFunction={(prop, value) =>
-                    Animated.spring(prop, {
-                      toValue: value,
-                      bounciness: 0,
-                    })}
+                  ref={this.captureSideMenuRef}
+                  {...sideMenuOptions}
                   menu={
                     <Menu
                       currentSub={match.params.name}
@@ -92,6 +110,7 @@ export default class App extends React.Component {
                   <Fetch
                     url={`https://www.reddit.com/r/${match.params
                       .name}.json?limit=${DEFAULT_LIMIT}&after=${match.params.after || ''}`}
+                    didNavigate={this.closeMenu}
                     subreddit={match.params.name}
                     func={subredditFetch}
                     component={Listing}
