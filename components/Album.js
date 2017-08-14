@@ -36,13 +36,9 @@ class Album extends React.Component {
     const { albumFetch, shareUrl, toggleInfo, showInfo, infoBoxStyle } = this.props
 
     if (albumFetch.pending) {
-      return (
-        <Loading />
-      )
+      return <Loading />
     } else if (albumFetch.rejected) {
-      return (
-        <Error />
-      )
+      return <Error />
     } else if (albumFetch.fulfilled) {
       if (albumFetch.value.images.length === 1) {
         const image = albumFetch.value.images[0]
@@ -60,10 +56,7 @@ class Album extends React.Component {
           horizontal
           items={albumFetch.value.images}
           extraData={showInfo}
-          renderItem={(
-            { id, link, animated, description },
-            { shouldRender, currentIndex, isVisible }
-          ) =>
+          renderItem={({ id, link, animated }, { shouldRender, currentIndex, isVisible }) =>
             <Touch onPress={toggleInfo} onLongPress={() => shareUrl(link)}>
               <Card>
                 {animated
@@ -72,25 +65,30 @@ class Album extends React.Component {
               </Card>
             </Touch>}
         >
-          {currentIndex =>
-            <InfoBox position="bottom">
-              <Animated.View style={infoBoxStyle}>
-                <Vibrant>
-                  <OverflowText small>
-                    {albumFetch.value.images[currentIndex].description}
-                  </OverflowText>
-                </Vibrant>
-              </Animated.View>
+          {currentIndex => {
+            const description = albumFetch.value.images[currentIndex].description
+            return (
+              <InfoBox position="bottom">
+                {description &&
+                  <Animated.View style={infoBoxStyle}>
+                    <Vibrant>
+                      <OverflowText small>
+                        {description}
+                      </OverflowText>
+                    </Vibrant>
+                  </Animated.View>}
 
-              {showInfo &&
-                <Gateway into="album-indicator">
-                  <AlbumIndicatorContainer>
-                    <Text small>
-                      {`${currentIndex + 1} of ${albumFetch.value.images.length}`}
-                    </Text>
-                  </AlbumIndicatorContainer>
-                </Gateway>}
-            </InfoBox>}
+                {showInfo &&
+                  <Gateway into="album-indicator">
+                    <AlbumIndicatorContainer>
+                      <Text small>
+                        {`${currentIndex + 1} of ${albumFetch.value.images.length}`}
+                      </Text>
+                    </AlbumIndicatorContainer>
+                  </Gateway>}
+              </InfoBox>
+            )
+          }}
         </Swiper>
       )
     }
