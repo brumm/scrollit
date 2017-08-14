@@ -7,15 +7,26 @@ import Swipeable from 'react-native-swipeable'
 import history from 'scrollit/history'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
+const NavLink = ({ children, to, exact }) =>
+  <Route
+    path={to}
+    exact={exact}
+    children={({ match }) =>
+      <Link style={{}} component={Touch} to={to}>
+        {children(match)}
+      </Link>}
+  />
+
 const LinkText = glamorous.text({
   fontSize: 20,
   paddingVertical: 10,
   paddingHorizontal: 20,
   marginVertical: 5,
   color: '#fafafa',
-  backgroundColor: 'black',
   width: ITEM_WIDTH,
-})
+}, ({ active }) => ({
+  backgroundColor: active ? '#295380' : 'black',
+}))
 
 const Button = glamorous.text({
   fontSize: 20,
@@ -100,9 +111,9 @@ export default class Menu extends React.Component {
                   setSavedSubs(savedSubs.filter(savedsub => savedsub.join() !== sub.join()))
                 }}
               >
-                <Link to={`/r/${sub.join('+')}`} key={sub} component={Touch}>
-                  <LinkText numberOfLines={1}>{`/r/${sub.join('+')}`}</LinkText>
-                </Link>
+                <NavLink to={`/r/${sub.join('+')}`} key={sub} component={Touch}>
+                  {match => <LinkText active={match}>{`r/${sub.join('+')}`}</LinkText>}
+                </NavLink>
               </Swipeable>
             )}
           </View>
