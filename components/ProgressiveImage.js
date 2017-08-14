@@ -4,6 +4,10 @@ import { Animated, View, Image, StyleSheet, Text } from 'react-native'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
 export default class ProgressiveImage extends Component {
+  static defaultProps = {
+    thumbnailBlurRadius: 5
+  }
+
   state = {
     imageOpacity: new Animated.Value(0),
     thumbnailOpacity: new Animated.Value(0),
