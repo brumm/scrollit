@@ -6,7 +6,7 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 import { Text } from 'scrollit/components/Layout'
 
 const between = (number, min, max) => number >= min && number <= max
-const MIN_PULLUP_DISTANCE = -75
+const MIN_PULLUP_DISTANCE = 50
 
 export default class Swiper extends React.Component {
   static defaultProps = {
@@ -47,8 +47,8 @@ export default class Swiper extends React.Component {
 
     if (onRefresh) {
       this.setState({
-        readyToRefresh: pullUpDistance <= MIN_PULLUP_DISTANCE,
-        stickAt: contentSize - viewSize - MIN_PULLUP_DISTANCE,
+        readyToRefresh: pullUpDistance <= -MIN_PULLUP_DISTANCE,
+        stickAt: contentSize - viewSize + MIN_PULLUP_DISTANCE,
       })
     }
 
@@ -88,7 +88,7 @@ export default class Swiper extends React.Component {
               left: 0,
               right: 0,
               backgroundColor: 'black',
-              height: Math.abs(MIN_PULLUP_DISTANCE),
+              height: MIN_PULLUP_DISTANCE,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -96,9 +96,9 @@ export default class Swiper extends React.Component {
             {readyToRefresh ? refreshing ? (
               <ActivityIndicator />
             ) : (
-              <Text>Release to go</Text>
+              <Text small>Release to go</Text>
             ) : (
-              <Text>Next page</Text>
+              <Text small>Next page</Text>
             )}
           </View>
         )}
