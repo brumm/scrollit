@@ -16,7 +16,7 @@ import VideoPlayer from 'scrollit/components/VideoPlayer'
 import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
 import { toggleOverflow } from 'scrollit/utils'
 
-const AlbumIndicatorContainer = props =>
+const AlbumIndicatorContainer = props => (
   <Vibrant
     {...props}
     style={{
@@ -28,6 +28,7 @@ const AlbumIndicatorContainer = props =>
       marginRight: 10,
     }}
   />
+)
 
 const OverflowText = toggleOverflow(Text)
 
@@ -56,36 +57,39 @@ class Album extends React.Component {
           horizontal
           items={albumFetch.value.images}
           extraData={showInfo}
-          renderItem={({ id, link, animated }, { shouldRender, currentIndex, isVisible }) =>
+          renderItem={({ id, link, animated }, { shouldRender, currentIndex, isVisible }) => (
             <Touch onPress={toggleInfo} onLongPress={() => shareUrl(link)}>
               <Card>
-                {animated
-                  ? <VideoPlayer id={id} paused={!isVisible} />
-                  : <ProgressiveImage visible={shouldRender} id={id} />}
+                {animated ? (
+                  <VideoPlayer id={id} paused={!isVisible} />
+                ) : (
+                  <ProgressiveImage visible={shouldRender} id={id} />
+                )}
               </Card>
-            </Touch>}
+            </Touch>
+          )}
         >
           {currentIndex => {
             const description = albumFetch.value.images[currentIndex].description
             return (
               <InfoBox position="bottom">
-                {description &&
+                {description && (
                   <Animated.View style={infoBoxStyle}>
                     <Vibrant>
-                      <OverflowText small>
-                        {description}
-                      </OverflowText>
+                      <OverflowText small>{description}</OverflowText>
                     </Vibrant>
-                  </Animated.View>}
+                  </Animated.View>
+                )}
 
-                {showInfo &&
+                {showInfo && (
                   <Gateway into="album-indicator">
                     <AlbumIndicatorContainer>
                       <Text small>
                         {`${currentIndex + 1} of ${albumFetch.value.images.length}`}
                       </Text>
                     </AlbumIndicatorContainer>
-                  </Gateway>}
+                  </Gateway>
+                )}
               </InfoBox>
             )
           }}

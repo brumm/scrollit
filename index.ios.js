@@ -33,7 +33,7 @@ const sideMenuOptions = {
     Animated.spring(prop, {
       toValue: value,
       bounciness: 0,
-    })
+    }),
 }
 
 export default class App extends React.Component {
@@ -47,7 +47,7 @@ export default class App extends React.Component {
   }
 
   captureSideMenuRef = instance => {
-     this.sideMenuInstance = instance
+    this.sideMenuInstance = instance
   }
 
   setSavedSubs = async savedSubs => {
@@ -71,11 +71,12 @@ export default class App extends React.Component {
           <Switch>
             <Route
               path="/u/:author"
-              render={({ match, location }) =>
+              render={({ match, location }) => (
                 <SideMenu
                   ref={this.captureSideMenuRef}
                   {...sideMenuOptions}
-                  menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}>
+                  menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}
+                >
                   <Fetch
                     url={`https://www.reddit.com/user/${match.params.author}/submitted.json`}
                     didNavigate={this.closeMenu}
@@ -83,19 +84,18 @@ export default class App extends React.Component {
                     component={Listing}
                     loading={
                       <Loading>
-                        <Text>
-                          {`/u/${match.params.author}`}
-                        </Text>
+                        <Text>{`/u/${match.params.author}`}</Text>
                       </Loading>
                     }
                     error={reason => <Error reason={reason} />}
                   />
-                </SideMenu>}
+                </SideMenu>
+              )}
             />
 
             <Route
               path="/r/:name/:after?"
-              render={({ match, location }) =>
+              render={({ match, location }) => (
                 <SideMenu
                   ref={this.captureSideMenuRef}
                   {...sideMenuOptions}
@@ -116,16 +116,13 @@ export default class App extends React.Component {
                     component={Listing}
                     loading={
                       <Loading>
-                        {match.params.name.split('+').map(name =>
-                          <Text key={name}>
-                            {name}
-                          </Text>
-                        )}
+                        {match.params.name.split('+').map(name => <Text key={name}>{name}</Text>)}
                       </Loading>
                     }
                     error={reason => <Error reason={reason} />}
                   />
-                </SideMenu>}
+                </SideMenu>
+              )}
             />
 
             <Redirect from="/" to={`/r/${DEFAULT_SUBREDDIT}`} />

@@ -7,26 +7,31 @@ import Swipeable from 'react-native-swipeable'
 import history from 'scrollit/history'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
-const NavLink = ({ children, to, exact }) =>
+const NavLink = ({ children, to, exact }) => (
   <Route
     path={to}
     exact={exact}
-    children={({ match }) =>
+    children={({ match }) => (
       <Link style={{}} component={Touch} to={to}>
         {children(match)}
-      </Link>}
+      </Link>
+    )}
   />
+)
 
-const LinkText = glamorous.text({
-  fontSize: 20,
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  marginVertical: 5,
-  color: '#fafafa',
-  width: ITEM_WIDTH,
-}, ({ active }) => ({
-  backgroundColor: active ? '#295380' : 'black',
-}))
+const LinkText = glamorous.text(
+  {
+    fontSize: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    color: '#fafafa',
+    width: ITEM_WIDTH,
+  },
+  ({ active }) => ({
+    backgroundColor: active ? '#295380' : 'black',
+  })
+)
 
 const Button = glamorous.text({
   fontSize: 20,
@@ -46,16 +51,16 @@ const selectCustomSubreddit = () =>
   AlertIOS.prompt('Enter subreddit', null, text => history.push(`/r/${text.toLowerCase()}`))
 
 const LeftContent = ({ currentSub }) =>
-  currentSub
-    ? <Button
-        style={{
-          backgroundColor: '#317e22',
-          textAlign: 'right',
-        }}
-      >
-        Add {`r/${currentSub}`}
-      </Button>
-    : null
+  currentSub ? (
+    <Button
+      style={{
+        backgroundColor: '#317e22',
+        textAlign: 'right',
+      }}
+    >
+      Add {`r/${currentSub}`}
+    </Button>
+  ) : null
 
 const rightContent = <Button style={{ backgroundColor: '#b91818' }}>Remove</Button>
 
@@ -76,21 +81,22 @@ export default class Menu extends React.Component {
             <LinkText>Enter subreddit name</LinkText>
           </Touch>
 
-          {currentSub &&
+          {currentSub && (
             <Touch
               onPress={() => {
                 setSavedSubs([...savedSubs, [currentSub]])
               }}
             >
-              {!savedSubs.some(sub => sub.join().includes(currentSub))
-                ? <LinkText style={{ backgroundColor: '#317e22' }}>
-                    Add {`r/${currentSub}`}
-                  </LinkText>
-                : <View />}
-            </Touch>}
+              {!savedSubs.some(sub => sub.join().includes(currentSub)) ? (
+                <LinkText style={{ backgroundColor: '#317e22' }}>Add {`r/${currentSub}`}</LinkText>
+              ) : (
+                <View />
+              )}
+            </Touch>
+          )}
 
           <View style={{ marginVertical: 30 }}>
-            {savedSubs.map((sub, index) =>
+            {savedSubs.map((sub, index) => (
               <Swipeable
                 key={`${sub}-${index}`}
                 leftContent={!sub.includes(currentSub) && <LeftContent currentSub={currentSub} />}
@@ -115,7 +121,7 @@ export default class Menu extends React.Component {
                   {match => <LinkText active={match}>{`r/${sub.join('+')}`}</LinkText>}
                 </NavLink>
               </Swipeable>
-            )}
+            ))}
           </View>
 
           <Touch onPress={() => history.goBack()}>

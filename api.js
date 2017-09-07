@@ -50,7 +50,7 @@ export const albumFetch = connect(({ id }) => ({
     url: `https://api.imgur.com/3/album/${id}`,
     then: ({ data }) => ({
       value: {
-        images: data.images
+        images: data.images,
       },
     }),
     headers: {

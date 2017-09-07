@@ -48,7 +48,7 @@ export default class Swiper extends React.Component {
     if (onRefresh) {
       this.setState({
         readyToRefresh: pullUpDistance <= MIN_PULLUP_DISTANCE,
-        stickAt: (contentSize - viewSize) - MIN_PULLUP_DISTANCE
+        stickAt: contentSize - viewSize - MIN_PULLUP_DISTANCE,
       })
     }
 
@@ -74,9 +74,11 @@ export default class Swiper extends React.Component {
     const { currentIndex, readyToRefresh, refreshing, pullUpDistance } = this.state
 
     return (
-      <View style={{
-        backgroundColor: '#1c1c1c'
-      }}>
+      <View
+        style={{
+          backgroundColor: '#1c1c1c',
+        }}
+      >
         {children && children(currentIndex)}
         {onRefresh && (
           <View
@@ -90,9 +92,15 @@ export default class Swiper extends React.Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            >
-              {readyToRefresh ? refreshing ? <ActivityIndicator  /> : <Text>Release to go</Text> : <Text>Next page</Text>}
-            </View>
+          >
+            {readyToRefresh ? refreshing ? (
+              <ActivityIndicator />
+            ) : (
+              <Text>Release to go</Text>
+            ) : (
+              <Text>Next page</Text>
+            )}
+          </View>
         )}
         <FlatList
           horizontal={horizontal}

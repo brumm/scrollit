@@ -74,62 +74,64 @@ export default class Listing extends React.Component {
                 }),
               }
 
-              const info = isVisible
-                ? <Gateway into="slide-title">
-                    <View
-                      onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
-                        this.setState({ infoBoxHeight })}
+              const info = isVisible ? (
+                <Gateway into="slide-title">
+                  <View
+                    onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
+                      this.setState({ infoBoxHeight })}
+                  >
+                    <Vibrant
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
                     >
-                      <Vibrant
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Touch onPress={() => history.push(`/u/${author}`)}>
-                          <Text small numberOfLines={3} style={{ flex: 1 }}>
-                            {title}
-                          </Text>
-                        </Touch>
+                      <Touch onPress={() => history.push(`/u/${author}`)}>
+                        <Text small numberOfLines={3} style={{ flex: 1 }}>
+                          {title}
+                        </Text>
+                      </Touch>
 
-                        <Touch onPress={() => history.push(`/r/${subreddit}`)}>
-                          <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
-                            {subreddit_name_prefixed}
-                          </Text>
-                        </Touch>
-                      </Vibrant>
-                    </View>
-                  </Gateway>
-                : null
+                      <Touch onPress={() => history.push(`/r/${subreddit}`)}>
+                        <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
+                          {subreddit_name_prefixed}
+                        </Text>
+                      </Touch>
+                    </Vibrant>
+                  </View>
+                </Gateway>
+              ) : null
 
               if (isImgur) {
                 return (
                   <Card>
                     {info}
-                    {isAlbum
-                      ? shouldRender
-                        ? <Album
-                            id={thingId}
-                            toggleInfo={this.toggleInfo}
-                            infoBoxStyle={infoBoxStyle}
-                            shareUrl={shareUrl}
-                            showInfo={isVisible}
-                          />
-                        : <Card />
-                      : isVideo
-                        ? <Touch
-                            onPress={this.toggleInfo}
-                            onLongPress={() => shareUrl(`https://i.imgur.com/${thingId}.mp4`)}
-                          >
-                            <View>
-                              <VideoPlayer id={thingId} paused={!isVisible} />
-                            </View>
-                          </Touch>
-                        : <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
-                            <View>
-                              <ProgressiveImage visible={shouldRender} id={thingId} />
-                            </View>
-                          </Touch>}
+                    {isAlbum ? shouldRender ? (
+                      <Album
+                        id={thingId}
+                        toggleInfo={this.toggleInfo}
+                        infoBoxStyle={infoBoxStyle}
+                        shareUrl={shareUrl}
+                        showInfo={isVisible}
+                      />
+                    ) : (
+                      <Card />
+                    ) : isVideo ? (
+                      <Touch
+                        onPress={this.toggleInfo}
+                        onLongPress={() => shareUrl(`https://i.imgur.com/${thingId}.mp4`)}
+                      >
+                        <View>
+                          <VideoPlayer id={thingId} paused={!isVisible} />
+                        </View>
+                      </Touch>
+                    ) : (
+                      <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+                        <View>
+                          <ProgressiveImage visible={shouldRender} id={thingId} />
+                        </View>
+                      </Touch>
+                    )}
                   </Card>
                 )
               } else {

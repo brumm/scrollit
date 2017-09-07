@@ -19,7 +19,10 @@ export default class Fetch extends React.Component {
         } else if (fetch.rejected) {
           return error(fetch.reason)
         } else if (fetch.fulfilled) {
-          return React.createElement(component, { ...fetch.value, ...otherProps })
+          return React.createElement(component, {
+            ...fetch.value,
+            ...otherProps,
+          })
         }
       }),
       { url }

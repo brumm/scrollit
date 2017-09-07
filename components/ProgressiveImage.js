@@ -5,7 +5,7 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
 export default class ProgressiveImage extends Component {
   static defaultProps = {
-    thumbnailBlurRadius: 5
+    thumbnailBlurRadius: 5,
   }
 
   state = {
@@ -65,13 +65,14 @@ export default class ProgressiveImage extends Component {
           onLoad={this.onLoadThumbnail}
           blurRadius={thumbnailBlurRadius}
         />
-        {visible &&
+        {visible && (
           <Animated.Image
             resizeMode="contain"
             style={[styles.image, { opacity: this.state.imageOpacity }]}
             source={imageSource}
             onLoad={this.onLoadImage}
-          />}
+          />
+        )}
       </View>
     )
   }

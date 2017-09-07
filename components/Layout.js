@@ -28,14 +28,14 @@ export const Vibrant = ({ children, ...props }) => {
     paddingVertical: 5,
     paddingHorizontal: 5,
   })
-  return Platform.OS === 'ios'
-    ? <Container {...props}>
-        {children}
-      </Container>
-    : <Container {...props}>
-        <BlurView />
-        {children}
-      </Container>
+  return Platform.OS === 'ios' ? (
+    <Container {...props}>{children}</Container>
+  ) : (
+    <Container {...props}>
+      <BlurView />
+      {children}
+    </Container>
+  )
 }
 
 class AdaptingHeight extends React.Component {
