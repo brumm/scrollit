@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView, TouchableWithoutFeedback as Touch, AlertIOS } from 'react-native'
+import { Image, View, ScrollView, TouchableWithoutFeedback as Touch, AlertIOS } from 'react-native'
 import { Link, Route } from 'react-router-native'
 import glamorous from 'glamorous-native'
 import Swipeable from 'react-native-swipeable'
@@ -21,24 +21,20 @@ const NavLink = ({ children, to, exact }) => (
 
 const LinkText = glamorous.text(
   {
-    fontSize: 20,
-    paddingVertical: 10,
+    fontSize: 18,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     marginVertical: 5,
     color: '#fafafa',
-    width: ITEM_WIDTH,
+    width: '100%',
   },
   ({ active }) => ({
-    backgroundColor: active ? '#295380' : 'black',
+    backgroundColor: active ? '#9477DF' : 'black',
   })
 )
 
-const Button = glamorous.text({
-  fontSize: 20,
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  marginVertical: 5,
-  color: '#fafafa',
+const Button = glamorous(LinkText)({
+  width: null,
   backgroundColor: 'black',
 })
 
@@ -47,8 +43,14 @@ const MenuContainer = glamorous.view({
   backgroundColor: '#1c1c1c',
 })
 
+const Spacer = glamorous.view({
+  marginVertical: 20,
+})
+
 const selectCustomSubreddit = () =>
-  AlertIOS.prompt('Enter subreddit', null, text => history.push(`/r/${text.toLowerCase()}`))
+  AlertIOS.prompt('Enter subreddit', null, text =>
+    history.push(`/r/${text.replace(/\s/, '+').toLowerCase()}`)
+  )
 
 const LeftContent = ({ currentSub }) =>
   currentSub ? (
@@ -70,6 +72,17 @@ export default class Menu extends React.Component {
 
     return (
       <MenuContainer>
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            paddingVertical: 70,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image style={{ width: 100, height: 100 }} source={require('scrollit/images/icon.png')} />
+        </View>
         <ScrollView
           contentContainerStyle={{
             minHeight: ITEM_HEIGHT,
@@ -95,7 +108,7 @@ export default class Menu extends React.Component {
             </Touch>
           )}
 
-          <View style={{ marginVertical: 30 }}>
+          <Spacer>
             {savedSubs.map((sub, index) => (
               <Swipeable
                 key={`${sub}-${index}`}
@@ -118,11 +131,13 @@ export default class Menu extends React.Component {
                 }}
               >
                 <NavLink to={`/r/${sub.join('+')}`} key={sub} component={Touch}>
-                  {match => <LinkText active={match}>{`r/${sub.join('+')}`}</LinkText>}
+                  {match => (
+                    <LinkText numberOfLines={1} active={match}>{`r/${sub.join('+')}`}</LinkText>
+                  )}
                 </NavLink>
               </Swipeable>
             ))}
-          </View>
+          </Spacer>
 
           <Touch onPress={() => history.goBack()}>
             <LinkText>Navigate back</LinkText>
