@@ -79,7 +79,7 @@ export default class App extends React.Component {
                 >
                   <Fetch
                     url={`https://www.reddit.com/user/${match.params.author}/submitted.json`}
-                    didNavigate={this.closeMenu}
+                    onDidNavigate={this.closeMenu}
                     func={subredditFetch}
                     component={Listing}
                     loading={
@@ -110,7 +110,7 @@ export default class App extends React.Component {
                   <Fetch
                     url={`https://www.reddit.com/r/${match.params
                       .name}.json?limit=${DEFAULT_LIMIT}&after=${match.params.after || ''}`}
-                    didNavigate={this.closeMenu}
+                    onDidNavigate={this.closeMenu}
                     subreddit={match.params.name}
                     func={subredditFetch}
                     component={Listing}

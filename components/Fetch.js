@@ -3,7 +3,7 @@ import { connect } from 'react-refetch'
 
 export default class Fetch extends React.Component {
   componentWillUpdate(nextProps, nextState) {
-    this.props.didNavigate && this.props.didNavigate()
+    this.props.onDidNavigate && this.props.onDidNavigate()
   }
 
   shouldComponentUpdate({ url }) {
@@ -11,7 +11,7 @@ export default class Fetch extends React.Component {
   }
 
   render() {
-    const { component, func, loading, error, url, didNavigate, ...otherProps } = this.props
+    const { component, func, loading, error, url, onDidNavigate, ...otherProps } = this.props
     return React.createElement(
       connect(func)(({ fetch }) => {
         if (fetch.pending) {
