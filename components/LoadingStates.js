@@ -12,7 +12,7 @@ export const Loading = ({ children }) => (
   </Card>
 )
 
-export const Error = ({ reason }) => (
+export const Error = ({ reason, children }) => (
   <Card>
     <Text>{':('}</Text>
     {reason && (
@@ -20,5 +20,6 @@ export const Error = ({ reason }) => (
         {JSON.stringify(reason.cause, null, 2)}
       </Text>
     )}
+    {children}
   </Card>
 )

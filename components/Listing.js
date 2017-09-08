@@ -14,6 +14,7 @@ import Album from 'scrollit/components/Album'
 import VideoPlayer from 'scrollit/components/VideoPlayer'
 import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
 import { shareUrl } from 'scrollit/utils'
+import { Error } from 'scrollit/components/LoadingStates'
 
 export default class Listing extends React.Component {
   state = {
@@ -35,8 +36,18 @@ export default class Listing extends React.Component {
   render() {
     const { posts, after, subreddit } = this.props
     const { showInfoBox, infoBoxAnimation, infoBoxHeight } = this.state
-    const goNext = () => history.push(`/r/${subreddit}/${after}`)
 
+    if (posts.length === 0) {
+      return (
+        <Error>
+          <Text small style={{ marginTop: 20 }}>
+            No posts in {subreddit}
+          </Text>
+        </Error>
+      )
+    }
+
+    const goNext = () => history.push(`/r/${subreddit}/${after}`)
     const translateY = {
       translateY: infoBoxAnimation.interpolate({
         inputRange: [0, 1],
