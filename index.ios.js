@@ -3,6 +3,7 @@ import { AppRegistry, StatusBar, Animated } from 'react-native'
 import SideMenu from 'react-native-side-menu'
 import { Router, Route, Switch, Redirect } from 'react-router-native'
 import glamorous from 'glamorous-native'
+import buildUrl from 'build-url'
 
 import history from 'scrollit/history'
 import { subredditFetch } from 'scrollit/api'
@@ -35,6 +36,12 @@ const sideMenuOptions = {
       bounciness: 0,
     }),
 }
+
+const makeUrl = (path, queryParams) =>
+  buildUrl('https://www.reddit.com', {
+    path: `${path}.json`,
+    queryParams,
+  })
 
 export default class App extends React.Component {
   state = {
@@ -78,7 +85,7 @@ export default class App extends React.Component {
                   menu={<Menu savedSubs={savedSubs} setSavedSubs={this.setSavedSubs} />}
                 >
                   <Fetch
-                    url={`https://www.reddit.com/user/${match.params.author}/submitted.json`}
+                    url={makeUrl(`user/${match.params.author}/submitted`)}
                     onDidNavigate={this.closeMenu}
                     func={subredditFetch}
                     component={Listing}
@@ -108,8 +115,10 @@ export default class App extends React.Component {
                   }
                 >
                   <Fetch
-                    url={`https://www.reddit.com/r/${match.params
-                      .name}.json?limit=${DEFAULT_LIMIT}&after=${match.params.after || ''}`}
+                    url={makeUrl(`r/${match.params.name}`, {
+                      limit: DEFAULT_LIMIT,
+                      after: match.params.after,
+                    })}
                     onDidNavigate={this.closeMenu}
                     subreddit={match.params.name}
                     func={subredditFetch}
