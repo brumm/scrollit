@@ -19,7 +19,7 @@ export const Text = glamorous.text(
     color: '#fafafa',
   },
   ({ small }) => ({
-    fontSize: small ? 12 : 25,
+    fontSize: small ? 12 : 18,
   })
 )
 
