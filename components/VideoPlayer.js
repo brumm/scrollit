@@ -2,7 +2,8 @@ import React from 'react'
 import { View, StyleSheet, Image, Animated, TouchableWithoutFeedback as Touch } from 'react-native'
 import Video from 'react-native-video'
 
-import { Text } from 'scrollit/components/Layout'
+import { Text, Vibrant } from 'scrollit/components/Layout'
+import Icon from 'scrollit/components/Icon'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
@@ -56,6 +57,7 @@ export default class VideoPlayer extends React.Component {
 
         {!paused && (
           <Video
+            ref={player => (this.player = player)}
             source={{ uri: large }}
             volume={0}
             muted
@@ -79,6 +81,12 @@ export default class VideoPlayer extends React.Component {
           onLoad={this.onLoadThumbnail}
           blurRadius={5}
         />
+
+        <Touch onPress={() => this.player.seek(0)}>
+          <Vibrant style={{ position: 'absolute', left: 10, bottom: 10, borderRadius: 15 }}>
+            <Icon fill="#fff" name="Refresh" height="20" width="20" />
+          </Vibrant>
+        </Touch>
       </View>
     )
   }
