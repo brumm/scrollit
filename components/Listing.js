@@ -9,7 +9,6 @@ import history from 'scrollit/history'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
 import Swiper from 'scrollit/components/Swiper'
-import Card from 'scrollit/components/Card'
 import Album from 'scrollit/components/Album'
 import VideoPlayer from 'scrollit/components/VideoPlayer'
 import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
@@ -57,24 +56,12 @@ export default class Listing extends React.Component {
 
     return (
       <GatewayProvider>
-        <View>
+        <View style={{ backgroundColor: '#1c1c1c' }}>
           <Swiper
             items={posts}
             onRefresh={after && goNext}
             renderItem={(
-              {
-                title,
-                thingId,
-                isAlbum,
-                isFile,
-                url,
-                isVideo,
-                subreddit_name_prefixed,
-                author,
-                subreddit,
-                isImgur,
-                thumbnail,
-              },
+              { id, title, url, author, subreddit, type, small, large },
               { shouldRender, isVisible }
             ) => {
               const infoBoxStyle = {
@@ -105,68 +92,58 @@ export default class Listing extends React.Component {
 
                       <Touch onPress={() => history.push(`/r/${subreddit}`)}>
                         <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
-                          {subreddit_name_prefixed}
+                          {`r/${subreddit}`}
                         </Text>
                       </Touch>
                     </Vibrant>
                   </View>
                 </Gateway>
-              ) : null
+              )
 
-              if (isImgur) {
-                return (
-                  <Card>
-                    {info}
-                    {isAlbum ? shouldRender ? (
-                      <Album
-                        id={thingId}
-                        toggleInfo={this.toggleInfo}
-                        infoBoxStyle={infoBoxStyle}
-                        shareUrl={shareUrl}
-                        showInfo={isVisible}
-                      />
-                    ) : (
-                      <Card />
-                    ) : isVideo ? (
-                      <Touch
-                        onPress={this.toggleInfo}
-                        onLongPress={() => shareUrl(`https://i.imgur.com/${thingId}.mp4`)}
-                      >
-                        <View>
-                          <VideoPlayer id={thingId} paused={!isVisible} />
-                        </View>
-                      </Touch>
-                    ) : (
-                      <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
-                        <View>
-                          <ProgressiveImage visible={shouldRender} id={thingId} />
-                        </View>
-                      </Touch>
-                    )}
-                  </Card>
-                )
-              } else {
-                return (
-                  <Card>
-                    {info}
-                    <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+              let media
+              switch (type) {
+                case 'album':
+                  media = shouldRender && (
+                    <Album
+                      id={id}
+                      toggleInfo={this.toggleInfo}
+                      infoBoxStyle={infoBoxStyle}
+                      shareUrl={shareUrl}
+                      showInfo={isVisible}
+                    />
+                  )
+                  break
+
+                case 'video':
+                  media = (
+                    <Touch
+                      onPress={this.toggleInfo}
+                      onLongPress={() => shareUrl(`https://i.imgur.com/${id}.mp4`)}
+                    >
                       <View>
-                        <ProgressiveImage
-                          thumbnailSource={{
-                            uri: thumbnail,
-                            cache: 'force-cache',
-                          }}
-                          imageSource={{
-                            uri: url,
-                            cache: 'force-cache',
-                          }}
-                          visible={shouldRender}
-                        />
+                        <VideoPlayer small={small} large={large} paused={!isVisible} />
                       </View>
                     </Touch>
-                  </Card>
-                )
+                  )
+                  break
+
+                case 'image':
+                  media = (
+                    <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+                      <View>
+                        <ProgressiveImage visible={shouldRender} small={small} large={large} />
+                      </View>
+                    </Touch>
+                  )
+                  break
               }
+
+              return (
+                <View>
+                  {info}
+                  {media}
+                </View>
+              )
             }}
           />
 

@@ -28,22 +28,7 @@ export default class ProgressiveImage extends Component {
   }
 
   render() {
-    const { thumbnailBlurRadius, visible, id } = this.props
-    let { thumbnailSource, imageSource } = this.props
-
-    if (!thumbnailSource) {
-      thumbnailSource = {
-        uri: `https://i.imgur.com/${id}t.png`,
-        cache: 'force-cache',
-      }
-    }
-
-    if (!imageSource) {
-      imageSource = {
-        uri: `https://i.imgur.com/${id}l.png`,
-        cache: 'force-cache',
-      }
-    }
+    const { thumbnailBlurRadius, visible, small, large } = this.props
 
     return (
       <View
@@ -55,13 +40,13 @@ export default class ProgressiveImage extends Component {
         <Image
           resizeMode="cover"
           style={[styles.image, { opacity: 0.8 }]}
-          source={thumbnailSource}
+          source={{ uri: small }}
           blurRadius={15}
         />
         <Animated.Image
           resizeMode="contain"
           style={[styles.image, { opacity: this.state.thumbnailOpacity }]}
-          source={thumbnailSource}
+          source={{ uri: small }}
           onLoad={this.onLoadThumbnail}
           blurRadius={thumbnailBlurRadius}
         />
@@ -69,7 +54,7 @@ export default class ProgressiveImage extends Component {
           <Animated.Image
             resizeMode="contain"
             style={[styles.image, { opacity: this.state.imageOpacity }]}
-            source={imageSource}
+            source={{ uri: large }}
             onLoad={this.onLoadImage}
           />
         )}

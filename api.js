@@ -2,6 +2,54 @@ import { connect } from 'react-refetch'
 import URL from 'url-parse'
 
 const SUPPORTED_DOMAINS = ['i.imgur.com', 'imgur.com', 'i.redd.it']
+const fixRedditUrl = url => url.replace(/&amp;/g, '&')
+
+const transform = (post, isVideo) => {
+  switch (post.domain) {
+    case 'i.redd.it':
+      const image = post.preview.images[0]
+      if (isVideo) {
+        return {
+          small: fixRedditUrl(image.resolutions[0].url),
+          large: fixRedditUrl(image.variants.mp4.source.url),
+          type: 'video',
+        }
+      } else {
+        return {
+          small: fixRedditUrl(image.resolutions[0].url),
+          large: fixRedditUrl(image.source.url),
+          type: 'image',
+        }
+      }
+
+    case 'imgur.com':
+    case 'i.imgur.com':
+      const id = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/.exec(post.url)[1]
+      if (id.length === 5) {
+        return {
+          id,
+          type: 'album',
+        }
+      } else {
+        if (isVideo) {
+          return {
+            small: `https://i.imgur.com/${id}t.png`,
+            large: `https://i.imgur.com/${id}.mp4`,
+            type: 'video',
+          }
+        } else {
+          return {
+            small: `https://i.imgur.com/${id}t.png`,
+            large: `https://i.imgur.com/${id}l.png`,
+            type: 'image',
+          }
+        }
+      }
+
+    default:
+      return {}
+  }
+}
 
 export const subredditFetch = ({ url }) => ({
   fetch: {
@@ -10,33 +58,18 @@ export const subredditFetch = ({ url }) => ({
       value: {
         after,
         posts: children
-          .filter(({ data: { domain } }) => SUPPORTED_DOMAINS.includes(domain))
-          .map(({ data }) => {
-            if (data.domain.includes('i.redd.it')) {
-              return data
-            } else {
-              let url = data.url.replace(/gifv?/, 'mp4')
-              const { origin, pathname } = new URL(url)
-              url = origin + pathname
-              let thingId
-              try {
-                thingId = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/.exec(url)[1]
-              } catch (e) {
-                console.log(`parse failed for url ${data.url}`)
-                throw new Error(`parse failed for url ${data.url}`)
-              }
-
-              const isAlbum = thingId.length === 5
-              const isVideo = url.includes('mp4')
-
-              return {
-                ...data,
-                url,
-                thingId,
-                isAlbum,
-                isVideo,
-                isImgur: true,
-              }
+          .map(({ data }) => data)
+          .filter(({ domain }) => SUPPORTED_DOMAINS.includes(domain))
+          .map(post => {
+            const { id, domain, url, title, author, subreddit } = post
+            const { origin, pathname } = new URL(url)
+            return {
+              id,
+              url: origin + pathname,
+              title,
+              author,
+              subreddit,
+              ...transform(post, /\.gifv?/.test(url)),
             }
           }),
       },

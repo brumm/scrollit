@@ -4,6 +4,7 @@ import glamorous from 'glamorous-native'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 import { Text } from 'scrollit/components/Layout'
+import Card from 'scrollit/components/Card'
 
 const between = (number, min, max) => number >= min && number <= max
 const MIN_PULLUP_DISTANCE = 50
@@ -113,13 +114,16 @@ export default class Swiper extends React.Component {
           onResponderRelease={onRefresh && this.onResponderRelease}
           extraData={[currentIndex, this.props.extraData]}
           ref={this.captureRef}
-          renderItem={({ item, index }) =>
-            renderItem(item, {
-              index,
-              currentIndex,
-              shouldRender: between(index, currentIndex - 2, currentIndex + 2),
-              isVisible: index === currentIndex,
-            })}
+          renderItem={({ item, index }) => (
+            <Card>
+              {renderItem(item, {
+                index,
+                currentIndex,
+                shouldRender: between(index, currentIndex - 2, currentIndex + 2),
+                isVisible: index === currentIndex,
+              })}
+            </Card>
+          )}
         />
       </View>
     )

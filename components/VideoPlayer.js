@@ -1,6 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, Image, Animated } from 'react-native'
+import { View, StyleSheet, Image, Animated, TouchableWithoutFeedback as Touch } from 'react-native'
 import Video from 'react-native-video'
+
+import { Text } from 'scrollit/components/Layout'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
@@ -35,7 +37,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const { id, paused } = this.props
+    const { paused, small, large } = this.props
 
     return (
       <View
@@ -48,13 +50,13 @@ export default class VideoPlayer extends React.Component {
         <Image
           resizeMode="cover"
           style={[styles.image, { opacity: 0.8 }]}
-          source={{ uri: `https://i.imgur.com/${id}t.png` }}
+          source={{ uri: small }}
           blurRadius={15}
         />
 
         {!paused && (
           <Video
-            source={{ uri: `https://i.imgur.com/${id}.mp4` }}
+            source={{ uri: large }}
             volume={0}
             muted
             resizeMode="contain"
@@ -73,7 +75,7 @@ export default class VideoPlayer extends React.Component {
         <Animated.Image
           resizeMode="contain"
           style={[styles.image, { opacity: this.state.thumbnailOpacity }]}
-          source={{ uri: `https://i.imgur.com/${id}t.png` }}
+          source={{ uri: small }}
           onLoad={this.onLoadThumbnail}
           blurRadius={5}
         />

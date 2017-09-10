@@ -46,7 +46,7 @@ class Album extends React.Component {
         return (
           <Touch onPress={toggleInfo} onLongPress={() => shareUrl(image.link)}>
             <Card>
-              <ProgressiveImage visible id={image.id} />
+              <ProgressiveImage visible small={small} large={large} />
             </Card>
           </Touch>
         )
@@ -57,13 +57,21 @@ class Album extends React.Component {
           horizontal
           items={albumFetch.value.images}
           extraData={showInfo}
-          renderItem={({ id, link, animated }, { shouldRender, currentIndex, isVisible }) => (
+          renderItem={({ id, link, animated, mp4 }, { shouldRender, currentIndex, isVisible }) => (
             <Touch onPress={toggleInfo} onLongPress={() => shareUrl(link)}>
               <Card>
                 {animated ? (
-                  <VideoPlayer id={id} paused={!isVisible} />
+                  <VideoPlayer
+                    small={`https://i.imgur.com/${id}t.png`}
+                    large={mp4}
+                    paused={!isVisible}
+                  />
                 ) : (
-                  <ProgressiveImage visible={shouldRender} id={id} />
+                  <ProgressiveImage
+                    visible={shouldRender}
+                    small={`https://i.imgur.com/${id}t.png`}
+                    large={`https://i.imgur.com/${id}l.png`}
+                  />
                 )}
               </Card>
             </Touch>
