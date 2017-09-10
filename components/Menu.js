@@ -49,7 +49,7 @@ const Spacer = glamorous.view({
 
 const selectCustomSubreddit = () =>
   AlertIOS.prompt('Enter subreddit', null, text =>
-    history.push(`/r/${text.replace(/\s/, '+').toLowerCase()}`)
+    history.push(`/r/${text.replace(/\s/g, '+').toLowerCase()}`)
   )
 
 const LeftContent = ({ currentSub }) =>
