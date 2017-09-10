@@ -8,16 +8,17 @@ export const shareUrl = url =>
 export const by = (sortOrder, getKey) => (itemA, itemB) =>
   sortOrder.indexOf(getKey(itemA)) < sortOrder.indexOf(getKey(itemB)) ? -1 : 1
 
-export const toggleOverflow = (Component, { minLines = 2, maxLines = 0 } = {}) =>
+export const toggleOverflow = Component =>
   class extends React.Component {
-    state = { isOpen: false }
-
-    toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }))
+    toggle = () => {
+      this.props.onChange(!this.props.isOpen)
+    }
 
     render() {
+      const { minLines = 2, maxLines = 0, isOpen } = this.props
       return (
         <Touch onPress={this.toggle}>
-          <Component {...this.props} numberOfLines={this.state.isOpen ? maxLines : minLines} />
+          <Component {...this.props} numberOfLines={isOpen ? maxLines : minLines} />
         </Touch>
       )
     }

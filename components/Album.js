@@ -33,8 +33,15 @@ const AlbumIndicatorContainer = props => (
 const OverflowText = toggleOverflow(Text)
 
 class Album extends React.Component {
+  state = {
+    expandDescription: false,
+  }
+
+  toggleExpandDescription = expandDescription => this.setState({ expandDescription })
+
   render() {
-    const { albumFetch, shareUrl, toggleInfo, showInfo, infoBoxStyle } = this.props
+    const { albumFetch, shareUrl, toggleInfo, showInfo } = this.props
+    const { expandDescription } = this.state
 
     if (albumFetch.pending) {
       return <Loading />
@@ -56,7 +63,7 @@ class Album extends React.Component {
         <Swiper
           horizontal
           items={albumFetch.value.images}
-          extraData={showInfo}
+          extraData={[showInfo, expandDescription]}
           renderItem={({ id, link, animated, mp4 }, { shouldRender, currentIndex, isVisible }) => (
             <Touch onPress={toggleInfo} onLongPress={() => shareUrl(link)}>
               <Card>
@@ -80,25 +87,30 @@ class Album extends React.Component {
           {currentIndex => {
             const description = albumFetch.value.images[currentIndex].description
             return (
-              <InfoBox position="bottom">
-                {description && (
-                  <Animated.View style={infoBoxStyle}>
-                    <Vibrant>
-                      <OverflowText small>{description}</OverflowText>
-                    </Vibrant>
-                  </Animated.View>
-                )}
+              showInfo && (
+                <View>
+                  {description && (
+                    <Gateway into="slide-title">
+                      <Vibrant>
+                        <OverflowText
+                          onChange={this.toggleExpandDescription}
+                          isOpen={expandDescription}
+                          small
+                        >
+                          {description}
+                        </OverflowText>
+                      </Vibrant>
+                    </Gateway>
+                  )}
 
-                {showInfo && (
                   <Gateway into="album-indicator">
                     <AlbumIndicatorContainer>
-                      <Text small>
-                        {`${currentIndex + 1} of ${albumFetch.value.images.length}`}
-                      </Text>
+                      <Text small>{`${currentIndex + 1} of ${albumFetch.value.images
+                        .length}`}</Text>
                     </AlbumIndicatorContainer>
                   </Gateway>
-                )}
-              </InfoBox>
+                </View>
+              )
             )
           }}
         </Swiper>

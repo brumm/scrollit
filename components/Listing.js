@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
+import { StyleSheet, View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
 import glamorous from 'glamorous-native'
 import ProgressiveImage from 'scrollit/components/ProgressiveImage'
 import { Link } from 'react-router-native'
@@ -64,20 +64,9 @@ export default class Listing extends React.Component {
               { id, title, url, author, subreddit, type, small, large },
               { shouldRender, isVisible }
             ) => {
-              const infoBoxStyle = {
-                opacity: infoBoxAnimation,
-                marginBottom: infoBoxAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-infoBoxHeight, 0],
-                }),
-              }
-
-              const info = isVisible ? (
-                <Gateway into="slide-title">
-                  <View
-                    onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
-                      this.setState({ infoBoxHeight })}
-                  >
+              const info = isVisible && (
+                <Gateway into="post-title">
+                  <View>
                     <Vibrant
                       style={{
                         flexDirection: 'row',
@@ -107,7 +96,6 @@ export default class Listing extends React.Component {
                     <Album
                       id={id}
                       toggleInfo={this.toggleInfo}
-                      infoBoxStyle={infoBoxStyle}
                       shareUrl={shareUrl}
                       showInfo={isVisible}
                     />
@@ -157,8 +145,22 @@ export default class Listing extends React.Component {
                 }),
               }}
             >
-              <GatewayDest name="slide-title" component={View} />
+              <View
+                onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
+                  this.setState({ infoBoxHeight })}
+              >
+                <GatewayDest name="post-title" component={View} />
+                <View
+                  style={{
+                    width: ITEM_WIDTH,
+                    height: StyleSheet.hairlineWidth,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  }}
+                />
+                <GatewayDest name="slide-title" component={View} />
+              </View>
             </Animated.View>
+
             <GatewayDest name="album-indicator" component={View} />
           </InfoBox>
         </View>
