@@ -3,6 +3,7 @@ import URL from 'url-parse'
 
 const SUPPORTED_DOMAINS = ['i.imgur.com', 'imgur.com', 'i.redd.it']
 const fixRedditUrl = url => url.replace(/&amp;/g, '&')
+const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
 
 const transform = (post, isVideo) => {
   switch (post.domain) {
@@ -24,7 +25,7 @@ const transform = (post, isVideo) => {
 
     case 'imgur.com':
     case 'i.imgur.com':
-      const id = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/.exec(post.url)[1]
+      const id = imgurIdRegex.exec(post.url)[1]
       if (id.length === 5) {
         return {
           id,
