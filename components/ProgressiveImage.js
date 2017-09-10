@@ -37,12 +37,7 @@ export default class ProgressiveImage extends Component {
           height: ITEM_HEIGHT,
         }}
       >
-        <Image
-          resizeMode="cover"
-          style={[styles.image, { opacity: 0.8 }]}
-          source={{ uri: small }}
-          blurRadius={15}
-        />
+        <Image resizeMode="cover" style={styles.image} source={{ uri: small }} blurRadius={15} />
         <Animated.Image
           resizeMode="contain"
           style={[styles.image, { opacity: this.state.thumbnailOpacity }]}
