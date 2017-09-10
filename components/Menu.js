@@ -55,6 +55,7 @@ const selectCustomSubreddit = () =>
 const LeftContent = ({ currentSub }) =>
   currentSub ? (
     <Button
+      numberOfLines={1}
       style={{
         backgroundColor: '#317e22',
         textAlign: 'right',
@@ -64,7 +65,11 @@ const LeftContent = ({ currentSub }) =>
     </Button>
   ) : null
 
-const rightContent = <Button style={{ backgroundColor: '#b91818' }}>Remove</Button>
+const rightContent = (
+  <Button numberOfLines={1} style={{ backgroundColor: '#b91818' }}>
+    Remove
+  </Button>
+)
 
 export default class Menu extends React.Component {
   render() {
@@ -101,7 +106,9 @@ export default class Menu extends React.Component {
               }}
             >
               {!savedSubs.some(sub => sub.join().includes(currentSub)) ? (
-                <LinkText style={{ backgroundColor: '#317e22' }}>Add {`r/${currentSub}`}</LinkText>
+                <LinkText numberOfLines={1} style={{ backgroundColor: '#317e22' }}>
+                  Add {`r/${currentSub}`}
+                </LinkText>
               ) : (
                 <View />
               )}
