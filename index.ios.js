@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppRegistry, StatusBar, Animated } from 'react-native'
-import SideMenu from 'react-native-side-menu'
+import SideMenu from 'scrollit/packages/react-native-side-menu'
 import { Router, Route, Switch, Redirect } from 'react-router-native'
 import glamorous from 'glamorous-native'
 import buildUrl from 'build-url'
