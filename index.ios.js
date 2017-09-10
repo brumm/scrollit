@@ -63,9 +63,11 @@ export default class App extends React.Component {
   }
 
   closeMenu = () => {
-    if (this.sideMenuInstance) {
-      this.sideMenuInstance.openMenu(false)
-    }
+    setTimeout(() => {
+      if (this.sideMenuInstance) {
+        this.sideMenuInstance.openMenu(false)
+      }
+    }, 500)
   }
 
   render() {
