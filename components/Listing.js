@@ -138,7 +138,6 @@ export default class Listing extends React.Component {
           <InfoBox>
             <Animated.View
               style={{
-                opacity: infoBoxAnimation,
                 marginTop: infoBoxAnimation.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-infoBoxHeight, 0],
