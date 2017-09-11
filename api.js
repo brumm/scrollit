@@ -8,17 +8,25 @@ const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
 const transform = (post, isVideo) => {
   switch (post.domain) {
     case 'i.redd.it':
-      const image = post.preview.images[0]
-      if (isVideo) {
-        return {
-          small: fixRedditUrl(image.resolutions[0].url),
-          large: fixRedditUrl(image.variants.mp4.source.url),
-          type: 'video',
+      if (post.preview) {
+        const image = post.preview.images[0]
+        if (isVideo) {
+          return {
+            small: fixRedditUrl(image.resolutions[0].url),
+            large: fixRedditUrl(image.variants.mp4.source.url),
+            type: 'video',
+          }
+        } else {
+          return {
+            small: fixRedditUrl(image.resolutions[0].url),
+            large: fixRedditUrl(image.source.url),
+            type: 'image',
+          }
         }
       } else {
         return {
-          small: fixRedditUrl(image.resolutions[0].url),
-          large: fixRedditUrl(image.source.url),
+          small: post.url,
+          large: post.url,
           type: 'image',
         }
       }
