@@ -59,7 +59,15 @@ class Album extends React.Component {
         return (
           <Touch onPress={toggleInfo} onLongPress={() => shareUrl(image.link)}>
             <Card>
-              <ProgressiveImage visible small={small} large={large} />
+              {image.animated ? (
+                <VideoPlayer small={`https://i.imgur.com/${image.id}t.png`} large={image.mp4} />
+              ) : (
+                <ProgressiveImage
+                  visible
+                  small={`https://i.imgur.com/${image.id}t.png`}
+                  large={`https://i.imgur.com/${image.id}l.png`}
+                />
+              )}
             </Card>
           </Touch>
         )
