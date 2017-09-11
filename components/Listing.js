@@ -35,6 +35,7 @@ export default class Listing extends React.Component {
   render() {
     const { posts, after, subreddit } = this.props
     const { showInfoBox, infoBoxAnimation, infoBoxHeight } = this.state
+    const goNext = () => history.push(`/r/${subreddit}/${after}`)
 
     if (posts.length === 0) {
       return (
@@ -44,14 +45,6 @@ export default class Listing extends React.Component {
           </Text>
         </Error>
       )
-    }
-
-    const goNext = () => history.push(`/r/${subreddit}/${after}`)
-    const translateY = {
-      translateY: infoBoxAnimation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, infoBoxHeight],
-      }),
     }
 
     return (
