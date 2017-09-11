@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: '#1c1c1c',
     shadowOpacity: 0.75,
     shadowRadius: 10,
     shadowColor: 'black',
