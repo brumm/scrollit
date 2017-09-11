@@ -46,7 +46,13 @@ class Album extends React.Component {
     if (albumFetch.pending) {
       return <Loading />
     } else if (albumFetch.rejected) {
-      return <Error />
+      return (
+        <Error>
+          <Text small style={{ marginTop: 20 }}>
+            {albumFetch.reason.cause.data.error}
+          </Text>
+        </Error>
+      )
     } else if (albumFetch.fulfilled) {
       if (albumFetch.value.images.length === 1) {
         const image = albumFetch.value.images[0]
