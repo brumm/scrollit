@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Platform } from 'react-native'
+import { View, Platform, StyleSheet } from 'react-native'
 import glamorous from 'glamorous-native'
 import { BlurView, VibrancyView } from 'react-native-blur'
 
@@ -62,3 +62,13 @@ class AdaptingHeight extends React.Component {
     )
   }
 }
+
+export const Divider = () => (
+  <View
+    style={{
+      width: '100%',
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    }}
+  />
+)

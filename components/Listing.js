@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
+import { View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
 import glamorous from 'glamorous-native'
 import ProgressiveImage from 'scrollit/components/ProgressiveImage'
 import { Link } from 'react-router-native'
@@ -11,7 +11,7 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 import Swiper from 'scrollit/components/Swiper'
 import Album from 'scrollit/components/Album'
 import VideoPlayer from 'scrollit/components/VideoPlayer'
-import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
+import { Vibrant, Text, InfoBox, Divider } from 'scrollit/components/Layout'
 import { shareUrl } from 'scrollit/utils'
 import { Error } from 'scrollit/components/LoadingStates'
 
@@ -142,13 +142,7 @@ export default class Listing extends React.Component {
                   this.setState({ infoBoxHeight })}
               >
                 <GatewayDest name="post-title" component={View} />
-                <View
-                  style={{
-                    width: ITEM_WIDTH,
-                    height: StyleSheet.hairlineWidth,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                  }}
-                />
+                <Divider />
                 <GatewayDest name="slide-title" component={View} />
               </View>
             </Animated.View>
