@@ -83,8 +83,25 @@ export default class VideoPlayer extends React.Component {
         />
 
         <Touch onPress={() => this.player.seek(0)}>
-          <Vibrant style={{ position: 'absolute', left: 10, bottom: 10, borderRadius: 15 }}>
-            <Icon fill="#fff" name="Refresh" height="20" width="20" />
+          <Vibrant
+            style={{
+              position: 'absolute',
+              left: 10,
+              bottom: 10,
+              borderRadius: 22,
+              width: 44,
+              height: 44,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Icon
+              fill="#fff"
+              name="Refresh"
+              height="20"
+              width="20"
+              style={{ position: 'relative', top: -1 }}
+            />
           </Vibrant>
         </Touch>
       </View>
