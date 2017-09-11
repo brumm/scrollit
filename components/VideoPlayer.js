@@ -55,25 +55,25 @@ export default class VideoPlayer extends React.Component {
           blurRadius={15}
         />
 
-        {!paused && (
-          <Video
-            ref={player => (this.player = player)}
-            source={{ uri: large }}
-            volume={0}
-            muted
-            resizeMode="contain"
-            repeat={true}
-            playInBackground={false}
-            playWhenInactive={false}
-            onProgress={this.onShowVideo}
-            onError={console.log}
-            style={{
-              backgroundColor: 'transparent',
-              width: ITEM_WIDTH,
-              height: ITEM_HEIGHT,
-            }}
-          />
-        )}
+        <Video
+          ref={player => (this.player = player)}
+          source={{ uri: large }}
+          volume={0}
+          muted
+          paused={paused}
+          resizeMode="contain"
+          repeat={true}
+          playInBackground={false}
+          playWhenInactive={false}
+          onProgress={this.onShowVideo}
+          onError={console.log}
+          style={{
+            backgroundColor: 'transparent',
+            width: ITEM_WIDTH,
+            height: ITEM_HEIGHT,
+          }}
+        />
+
         <Animated.Image
           resizeMode="contain"
           style={[styles.image, { opacity: this.state.thumbnailOpacity }]}
@@ -86,7 +86,7 @@ export default class VideoPlayer extends React.Component {
           <Vibrant
             style={{
               position: 'absolute',
-              left: 10,
+              right: 10,
               bottom: 10,
               borderRadius: 22,
               width: 44,

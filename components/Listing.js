@@ -96,7 +96,7 @@ export default class Listing extends React.Component {
                   break
 
                 case 'video':
-                  media = (
+                  media = shouldRender && (
                     <Touch
                       onPress={this.toggleInfo}
                       onLongPress={() => shareUrl(`https://i.imgur.com/${id}.mp4`)}
