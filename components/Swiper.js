@@ -6,7 +6,6 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 import { Text } from 'scrollit/components/Layout'
 import Card from 'scrollit/components/Card'
 
-const between = (number, min, max) => number >= min && number <= max
 const MIN_PULLUP_DISTANCE = 50
 
 export default class Swiper extends React.Component {
@@ -104,22 +103,25 @@ export default class Swiper extends React.Component {
           </View>
         )}
         <FlatList
-          horizontal={horizontal}
-          pagingEnabled
-          indicatorStyle="white"
           data={items}
-          getItemLayout={this.getItemLayout}
-          keyExtractor={({ id }) => id}
-          onScroll={this.onScroll}
-          onResponderRelease={onRefresh && this.onResponderRelease}
           extraData={[currentIndex, this.props.extraData]}
+          getItemLayout={this.getItemLayout}
+          horizontal={horizontal}
+          indicatorStyle="white"
+          initialNumToRender={5}
+          contentContainerStyle={{ backgroundColor: '#1c1c1c' }}
+          windowSize={5}
+          keyExtractor={({ id }) => id}
+          removeClippedSubviews={false}
+          onResponderRelease={onRefresh && this.onResponderRelease}
+          onScroll={this.onScroll}
+          pagingEnabled
           ref={this.captureRef}
           renderItem={({ item, index }) => (
             <Card>
               {renderItem(item, {
                 index,
                 currentIndex,
-                shouldRender: between(index, currentIndex - 2, currentIndex + 2),
                 isVisible: index === currentIndex,
               })}
             </Card>

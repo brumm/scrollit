@@ -55,7 +55,7 @@ export default class Listing extends React.Component {
             onRefresh={after && goNext}
             renderItem={(
               { id, title, url, author, subreddit, media },
-              { shouldRender, isVisible }
+              { isVisible, currentIndex }
             ) => {
               const info = isVisible && (
                 <Gateway into="post-title">
@@ -85,7 +85,7 @@ export default class Listing extends React.Component {
               let mediaComponent
               switch (media.type) {
                 case 'album':
-                  mediaComponent = shouldRender && (
+                  mediaComponent = (
                     <Album
                       id={media.id}
                       toggleInfo={this.toggleInfo}
@@ -96,7 +96,7 @@ export default class Listing extends React.Component {
                   break
 
                 case 'video':
-                  mediaComponent = shouldRender && (
+                  mediaComponent = (
                     <Touch
                       onPress={this.toggleInfo}
                       onLongPress={() => shareUrl(`https://i.imgur.com/${id}.mp4`)}
@@ -112,11 +112,7 @@ export default class Listing extends React.Component {
                   mediaComponent = (
                     <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
                       <View>
-                        <ProgressiveImage
-                          visible={shouldRender}
-                          small={media.small}
-                          large={media.large}
-                        />
+                        <ProgressiveImage visible small={media.small} large={media.large} />
                       </View>
                     </Touch>
                   )
