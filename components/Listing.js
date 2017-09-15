@@ -11,7 +11,7 @@ import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 import Swiper from 'scrollit/components/Swiper'
 import Album from 'scrollit/components/Album'
 import VideoPlayer from 'scrollit/components/VideoPlayer'
-import { Vibrant, Text, InfoBox, Divider } from 'scrollit/components/Layout'
+import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
 import { shareUrl } from 'scrollit/utils'
 import { Error } from 'scrollit/components/LoadingStates'
 
@@ -54,7 +54,7 @@ export default class Listing extends React.Component {
             items={posts}
             onRefresh={after && goNext}
             renderItem={(
-              { id, title, url, author, subreddit, type, small, large },
+              { id, title, url, author, subreddit, media },
               { shouldRender, isVisible }
             ) => {
               const info = isVisible && (
@@ -82,12 +82,12 @@ export default class Listing extends React.Component {
                 </Gateway>
               )
 
-              let media
-              switch (type) {
+              let mediaComponent
+              switch (media.type) {
                 case 'album':
-                  media = shouldRender && (
+                  mediaComponent = shouldRender && (
                     <Album
-                      id={id}
+                      id={media.id}
                       toggleInfo={this.toggleInfo}
                       shareUrl={shareUrl}
                       showInfo={isVisible}
@@ -96,23 +96,27 @@ export default class Listing extends React.Component {
                   break
 
                 case 'video':
-                  media = shouldRender && (
+                  mediaComponent = shouldRender && (
                     <Touch
                       onPress={this.toggleInfo}
                       onLongPress={() => shareUrl(`https://i.imgur.com/${id}.mp4`)}
                     >
                       <View>
-                        <VideoPlayer small={small} large={large} paused={!isVisible} />
+                        <VideoPlayer small={media.small} large={media.large} paused={!isVisible} />
                       </View>
                     </Touch>
                   )
                   break
 
                 case 'image':
-                  media = (
+                  mediaComponent = (
                     <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
                       <View>
-                        <ProgressiveImage visible={shouldRender} small={small} large={large} />
+                        <ProgressiveImage
+                          visible={shouldRender}
+                          small={media.small}
+                          large={media.large}
+                        />
                       </View>
                     </Touch>
                   )
@@ -122,7 +126,7 @@ export default class Listing extends React.Component {
               return (
                 <View>
                   {info}
-                  {media}
+                  {mediaComponent}
                 </View>
               )
             }}
@@ -146,12 +150,21 @@ export default class Listing extends React.Component {
                   this.setState({ infoBoxHeight })}
               >
                 <GatewayDest name="post-title" component={View} />
-                <Divider />
                 <GatewayDest name="slide-title" component={View} />
               </View>
             </Animated.View>
 
             <GatewayDest name="album-indicator" component={View} />
+          </InfoBox>
+
+          <InfoBox position="bottom">
+            <Animated.View
+              style={{
+                opacity: infoBoxAnimation,
+              }}
+            >
+              <GatewayDest name="post-actions" component={View} />
+            </Animated.View>
           </InfoBox>
         </View>
       </GatewayProvider>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image, Animated, TouchableWithoutFeedback as Touch } from 'react-native'
 import Video from 'react-native-video'
+import { Gateway } from 'scrollit/packages/react-gateway'
 
 import { Text, Vibrant } from 'scrollit/components/Layout'
 import Icon from 'scrollit/components/Icon'
@@ -82,28 +83,32 @@ export default class VideoPlayer extends React.Component {
           blurRadius={5}
         />
 
-        <Touch onPress={() => this.player.seek(0)}>
-          <Vibrant
-            style={{
-              position: 'absolute',
-              right: 10,
-              bottom: 10,
-              borderRadius: 22,
-              width: 44,
-              height: 44,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Icon
-              fill="#fff"
-              name="Refresh"
-              height="20"
-              width="20"
-              style={{ position: 'relative', top: -1 }}
-            />
-          </Vibrant>
-        </Touch>
+        {!paused && (
+          <Gateway into="post-actions">
+            <Touch onPress={() => this.player.seek(0)}>
+              <Vibrant
+                style={{
+                  position: 'absolute',
+                  right: 10,
+                  bottom: 10,
+                  borderRadius: 22,
+                  width: 44,
+                  height: 44,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Icon
+                  fill="#fff"
+                  name="Refresh"
+                  height="20"
+                  width="20"
+                  style={{ position: 'relative', top: -1 }}
+                />
+              </Vibrant>
+            </Touch>
+          </Gateway>
+        )}
       </View>
     )
   }

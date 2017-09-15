@@ -4,6 +4,7 @@ import URL from 'url-parse'
 const SUPPORTED_DOMAINS = ['i.imgur.com', 'imgur.com', 'i.redd.it']
 const fixRedditUrl = url => url.replace(/&amp;/g, '&')
 const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
+const isGifRegex = /\.gifv?/
 
 const transform = (post, isVideo) => {
   switch (post.domain) {
@@ -42,12 +43,14 @@ const transform = (post, isVideo) => {
       } else {
         if (isVideo) {
           return {
+            id,
             small: `https://i.imgur.com/${id}t.png`,
             large: `https://i.imgur.com/${id}.mp4`,
             type: 'video',
           }
         } else {
           return {
+            id,
             small: `https://i.imgur.com/${id}t.png`,
             large: `https://i.imgur.com/${id}l.png`,
             type: 'image',
@@ -78,7 +81,7 @@ export const subredditFetch = ({ url }) => ({
               title,
               author,
               subreddit,
-              ...transform(post, /\.gifv?/.test(url)),
+              media: transform(post, isGifRegex.test(url)),
             }
           }),
       },

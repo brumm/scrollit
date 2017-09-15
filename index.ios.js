@@ -12,7 +12,8 @@ import Storage from 'scrollit/packages/react-native-key-value-store'
 import Listing from 'scrollit/components/Listing'
 import Fetch from 'scrollit/components/Fetch'
 import Menu from 'scrollit/components/Menu'
-import { Loading, Error } from 'scrollit/components/LoadingStates'
+import { Error } from 'scrollit/components/LoadingStates'
+import Loading from 'scrollit/components/Loading'
 import { Text } from 'scrollit/components/Layout'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
@@ -91,11 +92,7 @@ export default class App extends React.Component {
                     onDidNavigate={this.closeMenu}
                     func={subredditFetch}
                     component={Listing}
-                    loading={
-                      <Loading>
-                        <Text>{`/u/${match.params.author}`}</Text>
-                      </Loading>
-                    }
+                    loading={<Loading subreddits={[`/u/${match.params.author}`]} />}
                     error={reason => <Error reason={reason} />}
                   />
                 </SideMenu>
@@ -125,11 +122,7 @@ export default class App extends React.Component {
                     subreddit={match.params.name}
                     func={subredditFetch}
                     component={Listing}
-                    loading={
-                      <Loading>
-                        {match.params.name.split('+').map(name => <Text key={name}>{name}</Text>)}
-                      </Loading>
-                    }
+                    loading={<Loading subreddits={match.params.name.split('+')} />}
                     error={reason => <Error reason={reason} />}
                   />
                 </SideMenu>

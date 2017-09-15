@@ -13,7 +13,7 @@ import Card from 'scrollit/components/Card'
 import Swiper from 'scrollit/components/Swiper'
 import { albumFetch } from 'scrollit/api'
 import VideoPlayer from 'scrollit/components/VideoPlayer'
-import { Vibrant, Text, InfoBox } from 'scrollit/components/Layout'
+import { Vibrant, Text, InfoBox, Divider } from 'scrollit/components/Layout'
 import { toggleOverflow } from 'scrollit/utils'
 
 const AlbumIndicatorContainer = props => (
@@ -105,6 +105,7 @@ class Album extends React.Component {
                 <View>
                   {description && (
                     <Gateway into="slide-title">
+                      <Divider />
                       <Vibrant>
                         <OverflowText
                           onChange={this.toggleExpandDescription}
