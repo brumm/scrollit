@@ -93,10 +93,12 @@ export default class Swiper extends React.Component {
               alignItems: 'center',
             }}
           >
-            {readyToRefresh ? refreshing ? (
-              <ActivityIndicator />
-            ) : (
-              <Text small>Release to go</Text>
+            {readyToRefresh ? (
+              refreshing ? (
+                <ActivityIndicator />
+              ) : (
+                <Text small>Release to go</Text>
+              )
             ) : (
               <Text small>Next page</Text>
             )}
