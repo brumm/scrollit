@@ -105,16 +105,18 @@ class Album extends React.Component {
                 <View>
                   {description && (
                     <Gateway into="slide-title">
-                      <Divider />
-                      <Vibrant>
-                        <OverflowText
-                          onChange={this.toggleExpandDescription}
-                          isOpen={expandDescription}
-                          small
-                        >
-                          {description}
-                        </OverflowText>
-                      </Vibrant>
+                      <View>
+                        <Divider />
+                        <Vibrant>
+                          <OverflowText
+                            onChange={this.toggleExpandDescription}
+                            isOpen={expandDescription}
+                            small
+                          >
+                            {description}
+                          </OverflowText>
+                        </Vibrant>
+                      </View>
                     </Gateway>
                   )}
 
