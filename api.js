@@ -5,6 +5,7 @@ const SUPPORTED_DOMAINS = [
   'i.imgur.com',
   'imgur.com',
   'i.redd.it',
+  'v.redd.it',
   'gfycat.com',
   'giant.gfycat.com',
 ]
@@ -21,6 +22,13 @@ const transform = (post, isVideo) => {
         small: fixRedditUrl(image.resolutions[0].url),
         large: fixRedditUrl(image.variants.mp4.source.url),
         type: 'video',
+      }
+
+    case 'v.redd.it':
+      const image = post.preview.images[0]
+      return {
+        small: fixRedditUrl(image.resolutions[0].url),
+        large: fixRedditUrl(post.media.reddit_video.fallback_url),
       }
 
     case 'i.redd.it':
