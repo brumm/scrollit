@@ -14,10 +14,10 @@ const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
 const isGifRegex = /\.gifv?/
 
 const transform = (post, isVideo) => {
+  const image = post.preview.images[0]
   switch (post.domain) {
     case 'giant.gfycat.com':
     case 'gfycat.com':
-      const image = post.preview.images[0]
       return {
         small: fixRedditUrl(image.resolutions[0].url),
         large: fixRedditUrl(image.variants.mp4.source.url),
@@ -25,7 +25,6 @@ const transform = (post, isVideo) => {
       }
 
     case 'v.redd.it':
-      const image = post.preview.images[0]
       return {
         small: fixRedditUrl(image.resolutions[0].url),
         large: fixRedditUrl(post.media.reddit_video.fallback_url),
@@ -33,7 +32,6 @@ const transform = (post, isVideo) => {
 
     case 'i.redd.it':
       if (post.preview) {
-        const image = post.preview.images[0]
         if (isVideo) {
           return {
             small: fixRedditUrl(image.resolutions[0].url),
