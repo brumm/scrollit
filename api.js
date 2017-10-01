@@ -1,13 +1,28 @@
 import { connect } from 'react-refetch'
 import URL from 'url-parse'
 
-const SUPPORTED_DOMAINS = ['i.imgur.com', 'imgur.com', 'i.redd.it']
+const SUPPORTED_DOMAINS = [
+  'i.imgur.com',
+  'imgur.com',
+  'i.redd.it',
+  'gfycat.com',
+  'giant.gfycat.com',
+]
 const fixRedditUrl = url => url.replace(/&amp;/g, '&')
 const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
 const isGifRegex = /\.gifv?/
 
 const transform = (post, isVideo) => {
   switch (post.domain) {
+    case 'giant.gfycat.com':
+    case 'gfycat.com':
+      const image = post.preview.images[0]
+      return {
+        small: fixRedditUrl(image.resolutions[0].url),
+        large: fixRedditUrl(image.variants.mp4.source.url),
+        type: 'video',
+      }
+
     case 'i.redd.it':
       if (post.preview) {
         const image = post.preview.images[0]
