@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, FlatList, ActivityIndicator } from 'react-native'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
 import glamorous from 'glamorous-native'
 
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
@@ -7,6 +7,7 @@ import { Text } from 'scrollit/components/Layout'
 import Card from 'scrollit/components/Card'
 
 const MIN_PULLUP_DISTANCE = 50
+const between = (number, min, max) => number >= min && number <= max
 
 export default class Swiper extends React.Component {
   static defaultProps = {
@@ -25,9 +26,9 @@ export default class Swiper extends React.Component {
     this.props.onChange(this.props.items[this.state.currentIndex])
   }
 
-  captureRef = flatListInstance => {
-    if (flatListInstance) {
-      this.ListRef = flatListInstance._listRef._scrollRef
+  captureRef = listRef => {
+    if (listRef) {
+      this.ListRef = listRef
     }
   }
 
@@ -104,31 +105,31 @@ export default class Swiper extends React.Component {
             )}
           </View>
         )}
-        <FlatList
-          data={items}
-          extraData={[currentIndex, this.props.extraData]}
-          getItemLayout={this.getItemLayout}
+        <ScrollView
           horizontal={horizontal}
           indicatorStyle="white"
-          initialNumToRender={5}
           contentContainerStyle={{ backgroundColor: '#1c1c1c' }}
-          windowSize={5}
-          keyExtractor={({ id }) => id}
-          removeClippedSubviews={false}
+          removeClippedSubviews={true}
           onResponderRelease={onRefresh && this.onResponderRelease}
           onScroll={this.onScroll}
           pagingEnabled
+          scrollEventThrottle={50}
           ref={this.captureRef}
-          renderItem={({ item, index }) => (
-            <Card>
-              {renderItem(item, {
-                index,
-                currentIndex,
-                isVisible: index === currentIndex,
-              })}
-            </Card>
-          )}
-        />
+        >
+          {items.map((item, index) => {
+            const shouldRender = between(index, currentIndex - 2, currentIndex + 2)
+            return (
+              <Card key={item.id}>
+                {shouldRender &&
+                  renderItem(item, {
+                    index,
+                    currentIndex,
+                    isVisible: index === currentIndex,
+                  })}
+              </Card>
+            )
+          })}
+        </ScrollView>
       </View>
     )
   }
