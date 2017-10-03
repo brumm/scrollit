@@ -97,13 +97,25 @@ export const subredditFetch = ({ url }) => ({
           .map(post => {
             const { id, domain, url, title, author, subreddit } = post
             const { origin, pathname } = new URL(url)
+
+            let media = {}
+            if (__DEV__) {
+              try {
+                media = transform(post, isGifRegex.test(url))
+              } catch (error) {
+                console.error('post transform failed', { post, error })
+              }
+            } else {
+              media = transform(post, isGifRegex.test(url))
+            }
+
             return {
               id,
               url: origin + pathname,
               title,
               author,
               subreddit,
-              media: transform(post, isGifRegex.test(url)),
+              media,
             }
           }),
       },
