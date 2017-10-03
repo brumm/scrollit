@@ -14,19 +14,18 @@ const imgurIdRegex = /com(?:\/(?:a|gallery))?\/([a-zA-Z0-9]{5,7})/
 const isGifRegex = /\.gifv?/
 
 const transform = (post, isVideo) => {
-  const image = post.preview.images[0]
   switch (post.domain) {
     case 'giant.gfycat.com':
     case 'gfycat.com':
       return {
-        small: fixRedditUrl(image.resolutions[0].url),
-        large: fixRedditUrl(image.variants.mp4.source.url),
+        small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
+        large: fixRedditUrl(post.preview.images[0].variants.mp4.source.url),
         type: 'video',
       }
 
     case 'v.redd.it':
       return {
-        small: fixRedditUrl(image.resolutions[0].url),
+        small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
         large: fixRedditUrl(post.media.reddit_video.fallback_url),
       }
 
@@ -34,14 +33,14 @@ const transform = (post, isVideo) => {
       if (post.preview) {
         if (isVideo) {
           return {
-            small: fixRedditUrl(image.resolutions[0].url),
-            large: fixRedditUrl(image.variants.mp4.source.url),
+            small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
+            large: fixRedditUrl(post.preview.images[0].variants.mp4.source.url),
             type: 'video',
           }
         } else {
           return {
-            small: fixRedditUrl(image.resolutions[0].url),
-            large: fixRedditUrl(image.source.url),
+            small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
+            large: fixRedditUrl(post.preview.images[0].source.url),
             type: 'image',
           }
         }
