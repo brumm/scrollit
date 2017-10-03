@@ -24,9 +24,11 @@ const transform = (post, isVideo) => {
       }
 
     case 'v.redd.it':
-      return {
-        small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
-        large: fixRedditUrl(post.media.reddit_video.fallback_url),
+      if (post.media) {
+        return {
+          small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
+          large: fixRedditUrl(post.media.reddit_video.fallback_url),
+        }
       }
 
     case 'i.redd.it':
