@@ -5,6 +5,7 @@ import glamorous from 'glamorous-native'
 import Swipeable from 'react-native-swipeable'
 
 import history from 'scrollit/history'
+import HeaderScrollView from 'scrollit/components/HeaderScrollView'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
 
 const NavLink = ({ children, to, exact }) => (
@@ -77,18 +78,14 @@ export default class Menu extends React.Component {
 
     return (
       <MenuContainer>
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            paddingVertical: 70,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Image style={{ width: 100, height: 100 }} source={require('scrollit/images/icon.png')} />
-        </View>
-        <ScrollView
+        <HeaderScrollView
+          headerMinHeight={120}
+          headerComponent={
+            <Image
+              style={{ width: 100, height: 100 }}
+              source={require('scrollit/images/icon.png')}
+            />
+          }
           contentContainerStyle={{
             minHeight: ITEM_HEIGHT,
             justifyContent: 'flex-end',
@@ -149,7 +146,7 @@ export default class Menu extends React.Component {
           <Touch onPress={() => history.goBack()}>
             <LinkText>Navigate back</LinkText>
           </Touch>
-        </ScrollView>
+        </HeaderScrollView>
       </MenuContainer>
     )
   }

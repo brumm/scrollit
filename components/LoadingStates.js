@@ -1,8 +1,8 @@
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
-import Card from 'scrollit/components/Card'
 import glamorous from 'glamorous-native'
 
+import Card from 'scrollit/components/Card'
 import { Text } from 'scrollit/components/Layout'
 
 export const Loading = ({ children }) => (
