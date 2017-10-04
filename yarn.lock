@@ -4204,16 +4204,6 @@ react-native-blur@^3.1.2:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-gesture-responder@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-responder/-/react-native-gesture-responder-0.1.1.tgz#802552d8eb7153c0d81a396e98f4b80b404b6798"
-  dependencies:
-    react-timer-mixin "^0.13.3"
-
-react-native-scroller@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-scroller/-/react-native-scroller-0.0.6.tgz#dea8c89bd1ca2d2445fbb6b3a90960df6c1767ff"
-
 react-native-side-menu@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-1.0.2.tgz#863f8bb253b7512c8c62cefc477aecd653383ddb"
@@ -4394,7 +4384,7 @@ react-test-renderer@16.0.0-alpha.12:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
 
-react-timer-mixin@^0.13.2, react-timer-mixin@^0.13.3:
+react-timer-mixin@^0.13.2:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
 
