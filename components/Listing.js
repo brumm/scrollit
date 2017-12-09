@@ -3,7 +3,11 @@ import { View, TouchableWithoutFeedback as Touch, Animated } from 'react-native'
 import glamorous from 'glamorous-native'
 import ProgressiveImage from 'scrollit/components/ProgressiveImage'
 import { Link } from 'react-router-native'
-import { GatewayProvider, GatewayDest, Gateway } from 'scrollit/packages/react-gateway'
+import {
+  GatewayProvider,
+  GatewayDest,
+  Gateway,
+} from 'scrollit/packages/react-gateway'
 
 import history from 'scrollit/history'
 import { ITEM_WIDTH, ITEM_HEIGHT } from 'scrollit/dimensions'
@@ -73,7 +77,10 @@ export default class Listing extends React.Component {
                       </Touch>
 
                       <Touch onPress={() => history.push(`/r/${subreddit}`)}>
-                        <Text small style={{ marginLeft: 'auto', paddingLeft: 10 }}>
+                        <Text
+                          small
+                          style={{ marginLeft: 'auto', paddingLeft: 10 }}
+                        >
                           {`r/${subreddit}`}
                         </Text>
                       </Touch>
@@ -99,10 +106,15 @@ export default class Listing extends React.Component {
                   mediaComponent = (
                     <Touch
                       onPress={this.toggleInfo}
-                      onLongPress={() => shareUrl(`https://i.imgur.com/${id}.mp4`)}
+                      onLongPress={() =>
+                        shareUrl(`https://i.imgur.com/${id}.mp4`)}
                     >
                       <View>
-                        <VideoPlayer small={media.small} large={media.large} paused={!isVisible} />
+                        <VideoPlayer
+                          small={media.small}
+                          large={media.large}
+                          paused={!isVisible}
+                        />
                       </View>
                     </Touch>
                   )
@@ -110,9 +122,16 @@ export default class Listing extends React.Component {
 
                 case 'image':
                   mediaComponent = (
-                    <Touch onPress={this.toggleInfo} onLongPress={() => shareUrl(url)}>
+                    <Touch
+                      onPress={this.toggleInfo}
+                      onLongPress={() => shareUrl(url)}
+                    >
                       <View>
-                        <ProgressiveImage visible small={media.small} large={media.large} />
+                        <ProgressiveImage
+                          visible
+                          small={media.small}
+                          large={media.large}
+                        />
                       </View>
                     </Touch>
                   )
@@ -142,8 +161,9 @@ export default class Listing extends React.Component {
               }}
             >
               <View
-                onLayout={({ nativeEvent: { layout: { height: infoBoxHeight } } }) =>
-                  this.setState({ infoBoxHeight })}
+                onLayout={({
+                  nativeEvent: { layout: { height: infoBoxHeight } },
+                }) => this.setState({ infoBoxHeight })}
               >
                 <GatewayDest name="post-title" component={View} />
                 <GatewayDest name="slide-title" component={View} />

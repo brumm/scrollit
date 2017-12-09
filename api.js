@@ -28,6 +28,7 @@ const transform = (post, isVideo) => {
         return {
           small: fixRedditUrl(post.preview.images[0].resolutions[0].url),
           large: fixRedditUrl(post.media.reddit_video.fallback_url),
+          type: 'video',
         }
       }
 
